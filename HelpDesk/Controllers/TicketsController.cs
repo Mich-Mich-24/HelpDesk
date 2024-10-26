@@ -79,15 +79,15 @@ namespace HelpDesk.Controllers
                 TimeStamp = DateTime.Now,
                 IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
                 UserId = userId,
-                Module = "Users",
-                AffectedTable = "Users"
+                Module = "Tickets",
+                AffectedTable = "Tickets"
 
             };
 
             _context.Add(activity);
             await _context.SaveChangesAsync();
 
-          
+            TempData["MESSAGE"] = "Ticket Details successfully Created";
             ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "FullName", ticket.CreatedById);
 
             return RedirectToAction(nameof(Index));
@@ -128,6 +128,7 @@ namespace HelpDesk.Controllers
                 {
                     _context.Update(ticket);
                     await _context.SaveChangesAsync();
+                    TempData["MESSAGE"] = "Ticket Details successfully Updated";
                 }
                 catch (DbUpdateConcurrencyException)
                 {

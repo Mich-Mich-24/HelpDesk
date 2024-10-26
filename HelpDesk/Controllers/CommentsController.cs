@@ -80,8 +80,25 @@ namespace HelpDesk.Controllers
             _context.Add(comment);
                 await _context.SaveChangesAsync();
 
+            //Log the Audi Trail
+            var activity = new AuditTrail
+            {
+                Action = "Create",
+                TimeStamp = DateTime.Now,
+                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                UserId = userId,
+                Module = "Comments",
+                AffectedTable = "comments"
 
-                return RedirectToAction(nameof(Index));
+            };
+
+            _context.Add(activity);
+            await _context.SaveChangesAsync();
+
+            TempData["MESSAGE"] = "Comment Details successfully Created";
+
+
+            return RedirectToAction(nameof(Index));
             
             ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "Fullame", comment.CreatedById);
             ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Title", comment.TicketId);
@@ -124,6 +141,7 @@ namespace HelpDesk.Controllers
                 {
                     _context.Update(comment);
                     await _context.SaveChangesAsync();
+                    TempData["MESSAGE"] = "Comments Details successfully Updated";
                 }
                 catch (DbUpdateConcurrencyException)
                 {

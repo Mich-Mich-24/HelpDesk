@@ -70,7 +70,24 @@ namespace HelpDesk.Controllers
                 if (result.Succeeded)
                 {
 
-                    return RedirectToAction("Index");
+                    //Log the Audi Trail
+                    var activity = new AuditTrail
+                    {
+                        Action = "Create",
+                        TimeStamp = DateTime.Now,
+                        IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                        UserId = userId,
+                        Module = "Users",
+                        AffectedTable = "Users"
+
+                    };
+
+                    _context.Add(activity);
+                    await _context.SaveChangesAsync();
+
+                    TempData["MESSAGE"] = "User Details successfully Created";
+
+                    return RedirectToAction(nameof(Index));
                 }
                 else
                 {

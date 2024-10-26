@@ -3,56 +3,64 @@
 @{
     ViewData["Title"] = "Tickets";
 }
+
+
+
 <div class="row">
     <div class="col-lg-3 col-6">
-        <div class="small-box bg-info">
+        <div class="small-box" style="background-color: #001f3f;">
+            <!-- Dark Navy Blue -->
             <div class="inner">
-                <h3>@ViewData["NewTickets"]</h3>
-                <p>New Tickets</p>
+                <h3 class="text-light">@ViewData["NewTickets"]</h3>
+                <p class="text-light">New Tickets</p>
             </div>
             <div class="icon">
-                <i class="ion ion-bag"></i>
+                <i class="ion ion-bag text-light"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="#" class="small-box-footer text-light">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <div class="col-lg-3 col-6">
-        <div class="small-box bg-success">
+        <div class="small-box" style="background-color: #004080;">
+            <!-- Dark Ocean Blue -->
             <div class="inner">
-                <h3>@ViewData["ResolvedTickets"]</h3>
-                <p>Resolved Tickets</p>
+                <h3 class="text-light">@ViewData["ResolvedTickets"]</h3>
+                <p class="text-light">Resolved Tickets</p>
             </div>
             <div class="icon">
-                <i class="ion ion-stats-bars"></i>
+                <i class="ion ion-stats-bars text-light"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="#" class="small-box-footer text-light">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <div class="col-lg-3 col-6">
-        <div class="small-box bg-warning">
+        <div class="small-box" style="background-color: #0056b3;">
+            <!-- Dark Steel Blue -->
             <div class="inner">
-                <h3>@ViewData["UserRegistrations"]</h3>
-                <p>User Registrations</p>
+                <h3 class="text-light">@ViewData["UserRegistrations"]</h3>
+                <p class="text-light">User Registrations</p>
             </div>
             <div class="icon">
-                <i class="ion ion-person-add"></i>
+                <i class="ion ion-person-add text-light"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="#" class="small-box-footer text-light">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <div class="col-lg-3 col-6">
-        <div class="small-box bg-danger">
+        <div class="small-box" style="background-color: #007bff;">
+            <!-- Bootstrap Primary -->
             <div class="inner">
-                <h3>@ViewData["UniqueVisitors"]</h3>
-                <p>Unique Visitors</p>
+                <h3 class="text-light">@ViewData["UniqueVisitors"]</h3>
+                <p class="text-light">Unique Visitors</p>
             </div>
             <div class="icon">
-                <i class="ion ion-pie-graph"></i>
+                <i class="ion ion-pie-graph text-light"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="#" class="small-box-footer text-light">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
 </div>
+
 
 
 
