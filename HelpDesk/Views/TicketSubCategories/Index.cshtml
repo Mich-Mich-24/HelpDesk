@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HelpDesk.Models.TicketCategory>
+﻿@model IEnumerable<HelpDesk.Models.TicketSubCategory>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,15 +7,18 @@
 <div class="card rounded-4">
     <div class="card-body">
         <div class="d-flex align-items-center">
-            <h6 class="mb-0">Ticket Categories</h6>
+            <h6 class="mb-0">Ticket Subcategories</h6>
         </div>
 
         <p>
-            <a asp-action="Create" class="btn btn-primary ">Add New Ticket Category</a>
+            <a asp-action="Create" class="btn btn-primary ">Add New  Ticket Sub Category</a>
         </p>
         <table class="table table-hover table-bordered table-striped">
-    <thead>
-        <tr>
+            <thead>
+                <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Code)
             </th>
@@ -28,7 +31,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.CreatedOn)
             </th>
-                    <th>Sub Category</th>
+
                     <th>View</th>
                     <th>Edit</th>
                     <th>Delete</th>
@@ -37,6 +40,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Id)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Code)
             </td>
@@ -49,11 +55,6 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedOn)
             </td>
-
-                        <td>
-                            <a class="btn btn-secondary" asp-action="Index" asp-controller="TicketSubCategories" asp-route-id="@item.Id">Sub Categories</a>
-
-                        </td>
                         <td>
                             <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Details</a>
 
@@ -70,6 +71,5 @@
 }
     </tbody>
 </table>
-
 </div>
 </div>

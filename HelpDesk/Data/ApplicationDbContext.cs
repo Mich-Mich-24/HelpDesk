@@ -16,6 +16,7 @@ namespace HelpDesk.Data
         public DbSet<AuditTrail> AuditTrails { get; set; }
 
         public DbSet<TicketCategory> TicketCategories { get; set; }
+        public DbSet<TicketSubCategory> TicketSubCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
