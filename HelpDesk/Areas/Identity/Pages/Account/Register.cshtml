@@ -1,0 +1,119 @@
+﻿@page
+@model RegisterModel
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = null; // No layout specified, can be modified as needed
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Help Desk  Management System - Register</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/AdminLTE/plugins/fontawesome-free/css/all.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="~/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/AdminLTE/dist/css/adminlte.min.css">
+</head>
+
+<body class="hold-transition register-page">
+    <div class="register-box" style="width: 600px;">
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center">
+                <a href="~/AdminLTE/index2.html" class="h1">Help Desk Management System</a>
+            </div>
+            <div class="card-body">
+                <p class="login-box-msg">Create a new account</p>
+
+                <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.FirstName" class="form-control" autocomplete="given-name" placeholder="First Name" required />
+                                <label asp-for="Input.FirstName">First Name</label>
+                                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.MiddleName" class="form-control" placeholder="Middle Name" />
+                                <label asp-for="Input.MiddleName">Middle Name</label>
+                                <span asp-validation-for="Input.MiddleName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.LastName" class="form-control" autocomplete="family-name" placeholder="Last Name" required />
+                                <label asp-for="Input.LastName">Last Name</label>
+                                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Gender" class="form-control" placeholder="Gender" required />
+                                <label asp-for="Input.Gender">Gender</label>
+                                <span asp-validation-for="Input.Gender" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Country" class="form-control" placeholder="Country" required />
+                                <label asp-for="Input.Country">Country</label>
+                                <span asp-validation-for="Input.Country" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.City" class="form-control" placeholder="City" required />
+                                <label asp-for="Input.City">City</label>
+                                <span asp-validation-for="Input.City" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Email" class="form-control" autocomplete="email" placeholder="Email" required />
+                                <label asp-for="Input.Email">Email</label>
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" placeholder="Password" required />
+                                <label asp-for="Input.Password">Password</label>
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" placeholder="Confirm Password" required />
+                                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
+                </form>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+
+    @section Scripts {
+        <script src="~/AdminLTE/plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="~/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- AdminLTE App -->
+        <script src="~/AdminLTE/dist/js/adminlte.min.js"></script>
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>
