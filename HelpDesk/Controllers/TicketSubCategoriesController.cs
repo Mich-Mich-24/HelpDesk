@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HelpDesk.Data;
 using HelpDesk.Models;
 using System.Security.Claims;
+using HelpDesk.ViewModels;
 
 namespace HelpDesk.Controllers
 {
@@ -21,17 +22,34 @@ namespace HelpDesk.Controllers
         }
 
         // GET: TicketSubCategories
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index(int id, TicketSubCategoriesVM vm)
         {
-            var subcategories =  await _context.TicketSubCategories
+            vm.TicketSubCategories =  await _context.TicketSubCategories
                 .Include(t => t.Category)
                 .Include(t => t.CreatedBy)
                 .Include(t => t.ModifiedBy)
                 .Where(x=>x.CategoryId == id)
                 .ToListAsync();
 
-            return View(subcategories);
+            vm.CategoryId = id;
+
+            return View(vm);
         }
+
+        public async Task<IActionResult> SubCategories ( TicketSubCategoriesVM vm)
+        {
+            vm.TicketSubCategories = await _context.TicketSubCategories
+                .Include(t => t.Category)
+                .Include(t => t.CreatedBy)
+                .Include(t => t.ModifiedBy)
+                .ToListAsync();
+
+         
+
+            return View(vm);
+        }
+
+
 
         // GET: TicketSubCategories/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -58,7 +76,6 @@ namespace HelpDesk.Controllers
         public IActionResult Create(int Id)
         {
             TicketSubCategory category = new ();
-
             category.CategoryId = Id;
 
             return View(category);
@@ -69,12 +86,14 @@ namespace HelpDesk.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( TicketSubCategory ticketSubCategory)
+        public async Task<IActionResult> Create(int id,  TicketSubCategory ticketSubCategory)
         {
             var loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ticketSubCategory.CreatedById = loggedInUser;
             ticketSubCategory.CreatedOn = DateTime.Now;
 
+            ticketSubCategory.Id = 0;
+            ticketSubCategory.CategoryId = id;
                 _context.Add(ticketSubCategory);
                 await _context.SaveChangesAsync();
 
@@ -94,7 +113,7 @@ namespace HelpDesk.Controllers
             await _context.SaveChangesAsync();
 
             TempData["MESSAGE"] = "Ticket Sub Category  Details successfully Created";
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", new { id=id});
             
           
             return View(ticketSubCategory);
