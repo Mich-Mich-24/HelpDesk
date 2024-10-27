@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HelpDesk.Data;
 using HelpDesk.Models;
 using System.Security.Claims;
+using HelpDesk.ViewModels;
 
 namespace HelpDesk.Controllers
 {
@@ -21,14 +22,14 @@ namespace HelpDesk.Controllers
         }
 
         // GET: Tickets
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(TicketViewModel vm)
         {
-            var tickets = await _context.Tickets
+            vm.Tickets = await _context.Tickets
                 .Include(t => t.CreatedBy)
                 .OrderBy(x => x.CreatedOn)
                 .ToListAsync();
 
-            return View(tickets);
+            return View(vm);
         }
 
         // GET: Tickets/Details/5
@@ -53,6 +54,7 @@ namespace HelpDesk.Controllers
         // GET: Tickets/Create
         public IActionResult Create()
         {
+            ViewData["CategoryId"] = new SelectList(_context.TicketCategories, "Id", "Name");
             ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "FullName");
             return View();
         }
@@ -88,6 +90,9 @@ namespace HelpDesk.Controllers
             await _context.SaveChangesAsync();
 
             TempData["MESSAGE"] = "Ticket Details successfully Created";
+
+            ViewData["CategoryId"] = new SelectList(_context.TicketCategories, "Id", "Name");
+
             ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "FullName", ticket.CreatedById);
 
             return RedirectToAction(nameof(Index));

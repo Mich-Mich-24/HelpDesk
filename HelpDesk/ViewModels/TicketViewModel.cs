@@ -1,8 +1,9 @@
-﻿using System.ComponentModel;
+﻿using HelpDesk.Models;
+using System.ComponentModel;
 
-namespace HelpDesk.Models
+namespace HelpDesk.ViewModels
 {
-    public class Ticket
+    public class TicketViewModel
     {
         [DisplayName("No")]
         public int Id { get; set; }
@@ -27,9 +28,14 @@ namespace HelpDesk.Models
         [DisplayName("Created On")]
         public DateTime CreatedOn { get; set; }
 
+        [DisplayName("Ticket Category")]
+        public int CategoryId { get; set; }
+
         [DisplayName("Ticket Sub-Category")]
-        public int? SubCategoryId { get; set; }
+        public int SubCategoryId { get; set; }
 
         public TicketSubCategory SubCategory { get; set; }
+
+        public List<Ticket> Tickets { get; set; }
     }
 }

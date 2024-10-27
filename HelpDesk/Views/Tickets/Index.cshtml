@@ -1,4 +1,4 @@
-﻿    @model IEnumerable<HelpDesk.Models.Ticket>
+﻿    @model HelpDesk.ViewModels.TicketViewModel
 
     @{
         ViewData["Title"] = "Index";
@@ -44,7 +44,7 @@
             </tr>
         </thead>
         <tbody>
-    @foreach (var item in Model) {
+    @foreach (var item in Model.Tickets) {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Id)
