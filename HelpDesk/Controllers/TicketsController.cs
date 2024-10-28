@@ -26,6 +26,7 @@ namespace HelpDesk.Controllers
         {
             vm.Tickets = await _context.Tickets
                 .Include(t => t.CreatedBy)
+                .Include(t=>t.SubCategory)
                 .OrderBy(x => x.CreatedOn)
                 .ToListAsync();
 
@@ -64,11 +65,18 @@ namespace HelpDesk.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Ticket ticket)
+        public async Task<IActionResult> Create(TicketViewModel ticketvm)
         {
             //Logged In User
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Ticket ticket = new(); 
+            ticket.Id = ticketvm.Id;
+            ticket.Title = ticketvm.Title;
+            ticket.Description = ticketvm.Description;
+            ticket.Status = ticketvm.Status;
+            ticket.Priority = ticketvm.Priority;
+            ticket.SubCategoryId = ticketvm.SubCategoryId;
 
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ticket.CreatedOn = DateTime.Now;
             ticket.CreatedById = userId;
             _context.Add(ticket);
