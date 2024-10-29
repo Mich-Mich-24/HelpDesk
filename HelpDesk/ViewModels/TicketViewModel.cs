@@ -15,10 +15,11 @@ namespace HelpDesk.ViewModels
         public string Description { get; set; }
 
         [DisplayName("Status")]
-        public string Status { get; set; }
+        public int StatusId { get; set; }
+ 
 
         [DisplayName("Priority")]
-        public string Priority { get; set; }
+        public int PriorityId { get; set; }
 
         [DisplayName("Created By")]
         public string CreatedById { get; set; }

@@ -55,6 +55,7 @@ namespace HelpDesk.Controllers
         // GET: Tickets/Create
         public IActionResult Create()
         {
+            ViewData["PriorityId"] = new SelectList(_context.SystemCodesDetails.Include(x=>x.SystemCode).Where(x=>x.SystemCode.Code=="Priority"), "Id", "Description");
             ViewData["CategoryId"] = new SelectList(_context.TicketCategories, "Id", "Name");
             ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "FullName");
             return View();
@@ -68,12 +69,18 @@ namespace HelpDesk.Controllers
         public async Task<IActionResult> Create(TicketViewModel ticketvm)
         {
             //Logged In User
+            var pendingstatus = await _context
+                .SystemCodesDetails
+                .Include(x => x.SystemCode)
+                .Where(x => x.SystemCode.Code == "Status" && x.Code == "Pending")
+                .FirstOrDefaultAsync();
+                
             Ticket ticket = new(); 
             ticket.Id = ticketvm.Id;
             ticket.Title = ticketvm.Title;
             ticket.Description = ticketvm.Description;
-            ticket.Status = ticketvm.Status;
-            ticket.Priority = ticketvm.Priority;
+            ticket.StatusId = pendingstatus.Id;
+            ticket.PriorityId = ticketvm.PriorityId;
             ticket.SubCategoryId = ticketvm.SubCategoryId;
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -98,6 +105,8 @@ namespace HelpDesk.Controllers
             await _context.SaveChangesAsync();
 
             TempData["MESSAGE"] = "Ticket Details successfully Created";
+
+            ViewData["PriorityId"] = new SelectList(_context.SystemCodesDetails.Include(x => x.SystemCode).Where(x => x.SystemCode.Code == "Priority"), "Id", "Description");
 
             ViewData["CategoryId"] = new SelectList(_context.TicketCategories, "Id", "Name");
 

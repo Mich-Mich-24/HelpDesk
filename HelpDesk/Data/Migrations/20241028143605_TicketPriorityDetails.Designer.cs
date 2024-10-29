@@ -4,6 +4,7 @@ using HelpDesk.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HelpDesk.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241028143605_TicketPriorityDetails")]
+    partial class TicketPriorityDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -286,8 +289,9 @@ namespace HelpDesk.Data.Migrations
                     b.Property<int>("PriorityId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SubCategoryId")
                         .HasColumnType("int");
@@ -301,8 +305,6 @@ namespace HelpDesk.Data.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("PriorityId");
-
-                    b.HasIndex("StatusId");
 
                     b.HasIndex("SubCategoryId");
 
@@ -613,12 +615,6 @@ namespace HelpDesk.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HelpDesk.Models.SystemCodeDetail", "Status")
-                        .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HelpDesk.Models.TicketSubCategory", "SubCategory")
                         .WithMany()
                         .HasForeignKey("SubCategoryId");
@@ -626,8 +622,6 @@ namespace HelpDesk.Data.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("Priority");
-
-                    b.Navigation("Status");
 
                     b.Navigation("SubCategory");
                 });
