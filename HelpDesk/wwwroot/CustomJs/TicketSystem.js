@@ -15,10 +15,10 @@
             },
 
             success: function (json) {
-                var data = json;
+                var data = json
                 console.log(data);
                 $(data).map(function () {
-                    $("#SubCategoryId").append($('<option></option>').val(this.id).html(this.name));
+                    $("#SubCategoryId").append($('<option></option>').val(this.id).html(this.name))
                 });
             },
 
