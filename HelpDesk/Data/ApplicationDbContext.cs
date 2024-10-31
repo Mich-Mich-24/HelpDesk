@@ -22,6 +22,8 @@ namespace HelpDesk.Data
 
         public DbSet<SystemCodeDetail> SystemCodesDetails { get; set; }
 
+        public DbSet<Department> Departments { get; set; }
+
 
 
 
