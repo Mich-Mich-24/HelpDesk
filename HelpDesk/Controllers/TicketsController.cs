@@ -15,10 +15,12 @@ namespace HelpDesk.Controllers
     public class TicketsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public TicketsController(ApplicationDbContext context)
+        public TicketsController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // GET: Tickets
@@ -45,6 +47,9 @@ namespace HelpDesk.Controllers
 
             var ticket = await _context.Tickets
                 .Include(t => t.CreatedBy)
+                .Include(t=>t.SubCategory)
+                .Include(t=>t.Status)
+                .Include(t=>t.Priority)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticket == null)
             {
@@ -68,8 +73,20 @@ namespace HelpDesk.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TicketViewModel ticketvm)
+        public async Task<IActionResult> Create(TicketViewModel ticketvm, IFormFile attachment)
         {
+
+            if(attachment.Length > 0)
+            {
+                var filename = "Ticket_Attachment" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + attachment.FileName;
+                var path = _configuration["FileSettings:UploadsFolder"]!;
+                var filepath = Path.Combine(path, filename);
+                var stream = new FileStream(filepath, FileMode.Create);
+                await attachment.CopyToAsync(stream);
+                ticketvm.Attachment = filename;
+            }
+
+
             //Logged In User
             var pendingstatus = await _context
                 .SystemCodesDetails
@@ -84,6 +101,8 @@ namespace HelpDesk.Controllers
             ticket.StatusId = pendingstatus.Id;
             ticket.PriorityId = ticketvm.PriorityId;
             ticket.SubCategoryId = ticketvm.SubCategoryId;
+            ticket.Attachment = ticketvm.Attachment;
+
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ticket.CreatedOn = DateTime.Now;

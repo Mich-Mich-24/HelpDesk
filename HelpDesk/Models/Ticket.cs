@@ -41,5 +41,9 @@ namespace HelpDesk.Models
 
 
         public TicketSubCategory SubCategory { get; set; }
+
+
+        [DisplayName("Document Attachments")]
+        public string Attachment { get; set; }
     }
 }
