@@ -38,10 +38,10 @@
                 <th>
                     @Html.DisplayNameFor(model => model.StatusId)
                 </th>
+                <th>No Of Comments</th>
                 <th>Comments</th>
                 <th>View</th>
                 <th>Edit</th>
-                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -88,23 +88,18 @@
                 <td  style="background-color:@colorcode">
                     @Html.DisplayFor(modelItem => item.Status.Description)
                 </td>
-
+                <td style="text-align:center">
+                    <a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id">  @item.TicketComments.Count() </a>
+                </td>
                 <td>
-
                     <a class="btn btn-secondary" asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id">Comments</a>
 
                 </td>
                 <td>
                     <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Details</a> 
-          
                 </td>
                 <td>
                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-
-                </td>
-                <td>
-                   <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-
                 </td>
             </tr>
     }

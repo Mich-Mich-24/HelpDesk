@@ -37,6 +37,12 @@ namespace HelpDesk.Data
                 .HasForeignKey(c => c.CreatedById)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Comment>()
+               .HasOne(c => c.Ticket)
+               .WithMany(c => c.TicketComments)
+               .HasForeignKey(c => c.TicketId)
+               .OnDelete(DeleteBehavior.Restrict);
+
             builder.Entity<TicketCategory>()
                .HasOne(c => c.ModifiedBy)
                .WithMany()

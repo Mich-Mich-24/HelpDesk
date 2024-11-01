@@ -31,6 +31,7 @@ namespace HelpDesk.Controllers
                 .Include(t=>t.SubCategory)
                 .Include(t => t.Priority)
                 .Include(t => t.Status)
+                .Include(t => t.TicketComments)
                 .OrderBy(x => x.CreatedOn)
                 .ToListAsync();
 
@@ -141,6 +142,41 @@ namespace HelpDesk.Controllers
             ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "FullName", ticket.CreatedById);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment(int id, TicketViewModel vm)
+        {
+
+            //Logged In User
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Comment newcomment = new();
+            newcomment.TicketId = id;
+            newcomment.CreatedOn = DateTime.Now;
+            newcomment.CreatedById = userId;
+            newcomment.Description = vm.CommentDescription;
+            _context.Add(newcomment);
+            await _context.SaveChangesAsync();
+
+            //Log the Audi Trail
+            var activity = new AuditTrail
+            {
+                Action = "Create",
+                TimeStamp = DateTime.Now,
+                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                UserId = userId,
+                Module = "Comments",
+                AffectedTable = "comments"
+
+            };
+
+            _context.Add(activity);
+            await _context.SaveChangesAsync();
+
+            TempData["MESSAGE"] = "Comment Details successfully Created";
+
+
+            return RedirectToAction("Details", new{ id=id});
         }
 
         // GET: Tickets/Edit/5

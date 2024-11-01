@@ -47,5 +47,7 @@ namespace HelpDesk.ViewModels
 
         [DisplayName("Attachment")]
         public string Attachment {  get; set; }
+
+        public String CommentDescription { get; set; }
     }
 }
