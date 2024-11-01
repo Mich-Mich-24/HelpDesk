@@ -15,15 +15,13 @@
     </p>
     <table class="table table-bordered table-responsive table-hover table-responsive-lg">
         <thead>
+
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.Id)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.StatusId)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.PriorityId)
@@ -37,6 +35,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.CreatedOn)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StatusId)
+                </th>
                 <th>Comments</th>
                 <th>View</th>
                 <th>Edit</th>
@@ -44,16 +45,33 @@
             </tr>
         </thead>
         <tbody>
-    @foreach (var item in Model.Tickets) {
-            <tr>
+    @foreach (var item in Model.Tickets) 
+    {
+        var colorcode = "Red";
+                    if (item.Status.Code == "Resolved")
+                    {
+                        colorcode = "Green";
+                    }
+                    else if (item.Status.Code == "InProgress")
+                    {
+                        colorcode = "Yellow";
+                    }
+                    else if (item.Status.Code == "Reassigned")
+                    {
+                        colorcode = "Purple";
+                    }
+                    else if (item.Status.Code == "AwaitingAssignment")
+                    {
+                        colorcode = "Red";
+                    }
+
+
+                    <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status.Description)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Priority.Description)
@@ -66,6 +84,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.CreatedOn)
+                </td>
+                <td  style="background-color:@colorcode">
+                    @Html.DisplayFor(modelItem => item.Status.Description)
                 </td>
 
                 <td>
