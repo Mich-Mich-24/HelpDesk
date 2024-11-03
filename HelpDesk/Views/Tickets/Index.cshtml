@@ -39,9 +39,8 @@
                     @Html.DisplayNameFor(model => model.StatusId)
                 </th>
                 <th>No Of Comments</th>
-                <th>Comments</th>
-                <th>View</th>
-                <th>Edit</th>
+                <th>Actions</th>
+              
             </tr>
         </thead>
         <tbody>
@@ -91,16 +90,29 @@
                 <td style="text-align:center">
                     <a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id">  @item.TicketComments.Count() </a>
                 </td>
-                <td>
-                    <a class="btn btn-secondary" asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id">Comments</a>
 
-                </td>
-                <td>
-                    <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Details</a> 
-                </td>
-                <td>
-                   <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                </td>
+                        <td>
+                            <div class="input-group input-group-lg">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-primary"  data-toggle="dropdown" aria-expanded="false">
+                                        Action
+                                        <span class="caret"><i class="fa fa-caret-down"></i></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+
+                                        <li class="dropdown-item"><a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id" class="btn" style="background-color: #4a90e2; color: white;"><i class="fa fa-comments"></i> Comments</a></li>
+                                        <li class="dropdown-divider"></li>
+                                        <li class="dropdown-item"><a asp-action="Details" asp-route-id="@item.Id" class="btn" style="background-color: #357ABD; color: white;"><i class="fa fa-info-circle"></i> Details</a></li>
+                                        <li class="dropdown-divider"></li>
+                                        <li class="dropdown-item"> <a asp-action="Edit" asp-route-id="@item.Id" class="btn" style="background-color: #2A5D9E; color: white;"><i class="fa fa-edit"></i> Edit</a></li>
+                                        <li class="dropdown-divider"></li>
+                                        <li class="dropdown-item"> <a asp-action="Assign" asp-route-id="@item.Id" class="btn" style="background-color: #28a745; color: white;"><i class="fa fa-user-plus"></i> Assign</a></li>
+                                        <li class="dropdown-divider"></li>
+                                        <li class="dropdown-item"> <a asp-action="Resolve" asp-route-id="@item.Id" class="btn" style="background-color: #17a2b8; color: white;"><i class="fa fa-check-circle"></i> Resolve</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
             </tr>
     }
         </tbody>

@@ -43,7 +43,11 @@ namespace HelpDesk.ViewModels
 
         public List<Comment> TicketComments { get; set; }
 
+        public List<TicketResolution> TicketResolutions { get; set; }
+
         public Comment TicketComment { get; set; }
+
+        public TicketResolution Resolution { get; set; }
 
         [DisplayName("Attachment")]
         public string Attachment {  get; set; }

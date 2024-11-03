@@ -66,6 +66,42 @@ namespace HelpDesk.Controllers
 
             return View(vm);
         }
+        public async Task<IActionResult> Resolve(int? id, TicketViewModel vm)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            vm.TicketDetails = await _context.Tickets
+                .Include(t => t.CreatedBy)
+                .Include(t => t.SubCategory)
+                .Include(t => t.Status)
+                .Include(t => t.Priority)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            vm.TicketComments = await _context.Comments
+                .Include(t => t.CreatedBy)
+                .Include(t => t.Ticket)
+                .Where(t => t.TicketId == id)
+                .ToListAsync();
+
+            vm.TicketResolutions = await _context.TicketResolutions
+             .Include(t => t.CreatedBy)
+             .Include(t => t.Ticket)
+             .Include(t=>t.Status)
+             .Where(t => t.TicketId == id)
+             .ToListAsync();
+
+            if (vm.TicketDetails == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["StatusId"] = new SelectList(_context.SystemCodesDetails.Include(x => x.SystemCode).Where(x => x.SystemCode.Code == "ResolutionStatus"), "Id", "Description");
+            return View(vm);
+        }
+
 
         // GET: Tickets/Create
         public IActionResult Create()
@@ -135,6 +171,7 @@ namespace HelpDesk.Controllers
 
             TempData["MESSAGE"] = "Ticket Details successfully Created";
 
+
             ViewData["PriorityId"] = new SelectList(_context.SystemCodesDetails.Include(x => x.SystemCode).Where(x => x.SystemCode.Code == "Priority"), "Id", "Description");
 
             ViewData["CategoryId"] = new SelectList(_context.TicketCategories, "Id", "Name");
@@ -177,6 +214,42 @@ namespace HelpDesk.Controllers
 
 
             return RedirectToAction("Details", new{ id=id});
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ResolvedConfirmed(int id, TicketViewModel vm)
+        {
+
+            //Logged In User
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            TicketResolution resolution = new();
+            resolution.TicketId = id;
+            resolution.StatusId = vm.StatusId;
+            resolution.CreatedOn = DateTime.Now;
+            resolution.CreatedById = userId;
+            resolution.Description = vm.CommentDescription;
+            _context.Add(resolution);
+            await _context.SaveChangesAsync();
+
+            //Log the Audi Trail
+            var activity = new AuditTrail
+            {
+                Action = "Create",
+                TimeStamp = DateTime.Now,
+                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                UserId = userId,
+                Module = " TicketResolutions",
+                AffectedTable = " TicketResolutions"
+
+            };
+
+            _context.Add(activity);
+            await _context.SaveChangesAsync();
+
+            TempData["MESSAGE"] = "Ticket Resolution Details successfully Created";
+
+
+            return RedirectToAction("Resolve", new { id = id });
         }
 
         // GET: Tickets/Edit/5
