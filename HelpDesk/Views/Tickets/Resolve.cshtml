@@ -97,7 +97,9 @@
                     </tbody>
                 </table>
 
-                <form asp-action="ResolvedConfirmed" method="post" enctype="multipart/form-data">
+                @if ((@Model.TicketDetails.Status.Code != "Resolved") && (@Model.TicketDetails.Status.Code != "Closed"))
+                {
+                 <form asp-action="ResolvedConfirmed" method="post" enctype="multipart/form-data">
                     <input type="hidden" class="hidden" asp-for="Id" />
                     <div class="row">
                         <label class="control-label">Ticket Status </label>
@@ -108,7 +110,15 @@
                         <textarea asp-for="CommentDescription" type="text" class="form-control"></textarea>
                     </div>
                     <button class="btn btn-primary float-end mt-5"> Add Resolution Status</button>
-                </form>
+                    </form>
+                }
+                @if (@Model.TicketDetails.Status.Code != "Closed") 
+                {
+                    <form asp-action="ClosedConfirmed" method="post" enctype="multipart/form-data">
+                        <input type="hidden" class="hidden" asp-for="Id" />
+                        <button class="btn btn-primary float-end mt-5"> Close Ticket</button>
+                    </form>
+                }
             </div>
         </div>
     </div>

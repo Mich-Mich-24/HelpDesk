@@ -59,6 +59,13 @@ namespace HelpDesk.Controllers
                 .Where(t=>t.TicketId==id)
                 .ToListAsync();
 
+            vm.TicketResolutions = await _context.TicketResolutions
+          .Include(t => t.CreatedBy)
+          .Include(t => t.Ticket)
+          .Include(t => t.Status)
+          .Where(t => t.TicketId == id)
+          .ToListAsync();
+
             if (vm.TicketDetails == null)
             {
                 return NotFound();
@@ -217,6 +224,58 @@ namespace HelpDesk.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> ClosedConfirmed(int id, TicketViewModel vm)
+        {
+
+            var closedstatus = await _context.SystemCodesDetails
+                .Include(x => x.SystemCode)
+                .Where(x=>x.SystemCode.Code=="ResolutionStatus" && x.Code=="Closed")
+                .FirstOrDefaultAsync();
+
+            //Logged In User
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            TicketResolution resolution = new();
+            resolution.TicketId = id;
+            resolution.StatusId = closedstatus.Id;
+            resolution.CreatedOn = DateTime.Now;
+            resolution.CreatedById = userId;
+            resolution.Description = "Ticket Closed";
+            _context.Add(resolution);
+
+
+
+            var ticket = await _context.Tickets
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            ticket.StatusId = closedstatus.Id;
+            _context.Update(ticket);
+
+            await _context.SaveChangesAsync();
+
+            //Log the Audi Trail
+            var activity = new AuditTrail
+            {
+                Action = "Closed",
+                TimeStamp = DateTime.Now,
+                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                UserId = userId,
+                Module = " TicketResolutions",
+                AffectedTable = " TicketResolutions"
+
+            };
+
+            _context.Add(activity);
+            await _context.SaveChangesAsync();
+
+            TempData["MESSAGE"] = "Ticket Closed successfully Created";
+
+
+            return RedirectToAction("Resolve", new { id = id });
+        }
+
+
+        [HttpPost]
         public async Task<IActionResult> ResolvedConfirmed(int id, TicketViewModel vm)
         {
 
@@ -229,6 +288,15 @@ namespace HelpDesk.Controllers
             resolution.CreatedById = userId;
             resolution.Description = vm.CommentDescription;
             _context.Add(resolution);
+
+
+
+            var ticket = await _context.Tickets
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+            ticket.StatusId = vm.StatusId;
+            _context.Update(ticket);
+
             await _context.SaveChangesAsync();
 
             //Log the Audi Trail

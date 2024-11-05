@@ -15,44 +15,70 @@
                 <h4>Ticket Information</h4>
                 <table class="table table-bordered table-hover">
                     <tr>
-                        <th style="background:springgreen">@Html.DisplayNameFor(model => model.Title)</th>
+                        <th style="background:green">@Html.DisplayNameFor(model => model.Title)</th>
                         <td>@Html.DisplayFor(model => model.TicketDetails.Title)</td>
                     </tr>
                     <tr>
-                        <th style="background:springgreen">@Html.DisplayNameFor(model => model.Description)</th>
+                        <th style="background:green">@Html.DisplayNameFor(model => model.Description)</th>
                         <td>@Html.DisplayFor(model => model.TicketDetails.Description)</td>
                     </tr>
                     <tr>
-                        <th style="background:springgreen">@Html.DisplayNameFor(model => model.StatusId)</th>
+                        <th style="background:green">@Html.DisplayNameFor(model => model.StatusId)</th>
                         <td>@Html.DisplayFor(model => model.TicketDetails.Status.Description)</td>
                     </tr>
                     <tr>
-                        <th style="background:springgreen">@Html.DisplayNameFor(model => model.PriorityId)</th>
+                        <th style="background:green">@Html.DisplayNameFor(model => model.PriorityId)</th>
                         <td>@Html.DisplayFor(model => model.TicketDetails.Priority.Description)</td>
                     </tr>
                     <tr>
-                        <th style="background:springgreen">@Html.DisplayNameFor(model => model.CreatedBy)</th>
+                        <th style="background:green">@Html.DisplayNameFor(model => model.CreatedBy)</th>
                         <td>@Html.DisplayFor(model => model.TicketDetails.CreatedBy.FullName)</td>
                     </tr>
                     <tr>
-                        <th style="background:springgreen">@Html.DisplayNameFor(model => model.CreatedOn)</th>
+                        <th style="background:green">@Html.DisplayNameFor(model => model.CreatedOn)</th>
                         <td>@Html.DisplayFor(model => model.TicketDetails.CreatedOn)</td>
                     </tr>
                     <tr>
-                        <th style="background:springgreen">@Html.DisplayNameFor(model => model.Attachment)</th>
+                        <th style="background:green">@Html.DisplayNameFor(model => model.Attachment)</th>
                         <td>@Html.DisplayFor(model => model.TicketDetails.Attachment)</td>
                     </tr>
                     <tr>
-                        <th style="background:springgreen">@Html.DisplayNameFor(model => model.SubCategoryId)</th>
+                        <th style="background:green">@Html.DisplayNameFor(model => model.SubCategoryId)</th>
                         <td>@Html.DisplayFor(model => model.TicketDetails.SubCategory.Name)</td>
                     </tr>
                 </table>
+
+                <div class="col-md-6">
+                    <h4>Ticket Resolution History</h4>
+                    <table class="table table-bordered table-hover">
+                        <thead style="background:darkolivegreen">
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.Resolution.Description)</th>
+                                <th>@Html.DisplayNameFor(model => model.Resolution.Status)</th>
+                                <th>@Html.DisplayNameFor(model => model.Resolution.CreatedOn)</th>
+                                <th>@Html.DisplayNameFor(model => model.Resolution.CreatedBy)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.TicketResolutions)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Status.Description)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.CreatedOn)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.CreatedBy.FullName)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
             </div>
 
             <div class="col-md-6">
                 <h4>Ticket Comments</h4>
                 <table class="table table-bordered table-hover">
-                    <thead style="background:mediumspringgreen">
+                    <thead style="background:forestgreen">
                         <tr>
                             <th>@Html.DisplayNameFor(model => model.TicketComment.Description)</th>
                             <th>@Html.DisplayNameFor(model => model.TicketComment.CreatedOn)</th>
@@ -70,15 +96,24 @@
                         }
                     </tbody>
                 </table>
-
-                <form asp-action="AddComment" method="post" enctype="multipart/form-data">
-                    <input type="hidden" class="hidden" asp-for="Id" />
-                    <div class="row">
-                        <label class="control-label">New Ticket Comment</label>
-                        <textarea asp-for="CommentDescription" type="text" class="form-control"></textarea>
-                    </div>
-                    <button class="btn btn-primary float-end mt-5"> Add Comment</button>
-                </form>
+                @if ((@Model.TicketDetails.Status.Code != "Resolved") && (@Model.TicketDetails.Status.Code != "Closed")  )
+                {
+                    <form asp-action="AddComment" method="post" enctype="multipart/form-data">
+                        <input type="hidden" class="hidden" asp-for="Id" />
+                        <div class="row">
+                            <label class="control-label">New Ticket Comment</label>
+                            <textarea asp-for="CommentDescription" type="text" class="form-control"></textarea>
+                        </div>
+                        <button class="btn btn-primary float-end mt-5"> Add Comment</button>
+                    </form>
+                }
+                @if (@Model.TicketDetails.Status.Code != "Closed")
+                {
+                    <form asp-action="ClosedConfirmed" method="post" enctype="multipart/form-data">
+                        <input type="hidden" class="hidden" asp-for="Id" />
+                        <button class="btn btn-primary float-end mt-5"> Close Ticket</button>
+                    </form>
+                }
             </div>
         </div>
     </div>

@@ -51,14 +51,19 @@
                     {
                         colorcode = "Green";
                     }
-                    else if (item.Status.Code == "InProgress")
+                    else if (item.Status.Code == "Escalated")
                     {
                         colorcode = "Yellow";
                     }
-                    else if (item.Status.Code == "Reassigned")
+                    else if (item.Status.Code == "InProgress")
                     {
                         colorcode = "Purple";
                     }
+                    else if (item.Status.Code == "Closed")
+                    {
+                        colorcode = "Green";
+                    }
+
                     else if (item.Status.Code == "AwaitingAssignment")
                     {
                         colorcode = "Red";
