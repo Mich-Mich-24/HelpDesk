@@ -46,6 +46,14 @@
                         <th style="background:springgreen">@Html.DisplayNameFor(model => model.SubCategoryId)</th>
                         <td>@Html.DisplayFor(model => model.TicketDetails.SubCategory.Name)</td>
                     </tr>
+                    <tr>
+                        <th style="background:green">@Html.DisplayNameFor(model => model.AssignedToId)</th>
+                        <td>@Html.DisplayFor(model => model.TicketDetails.AssignedTo.FullName)</td>
+                    </tr>
+                    <tr>
+                        <th style="background:green">@Html.DisplayNameFor(model => model.AssignedOn)</th>
+                        <td>@Html.DisplayFor(model => model.TicketDetails.AssignedOn)</td>
+                    </tr>
                 </table>
 
                 <div class="col-md-6">
