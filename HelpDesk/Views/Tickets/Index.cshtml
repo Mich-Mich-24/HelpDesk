@@ -111,9 +111,17 @@
                                         <li class="dropdown-divider"></li>
                                         <li class="dropdown-item"> <a asp-action="Edit" asp-route-id="@item.Id" class="btn" style="background-color: #2A5D9E; color: white;"><i class="fa fa-edit"></i> Edit</a></li>
                                         <li class="dropdown-divider"></li>
-                                        <li class="dropdown-item"> <a asp-action="Assign" asp-route-id="@item.Id" class="btn" style="background-color: #28a745; color: white;"><i class="fa fa-user-plus"></i> Assign</a></li>
-                                        <li class="dropdown-divider"></li>
-                                        <li class="dropdown-item"> <a asp-action="Resolve" asp-route-id="@item.Id" class="btn" style="background-color: #17a2b8; color: white;"><i class="fa fa-check-circle"></i> Resolve</a></li>
+                                        @if (item.Status.Code != "Resolved" && item.Status.Code != "Closed")
+                                        {
+                                          <li class="dropdown-item"> <a asp-action="Edit" asp-route-id="@item.Id" class="btn" style="background-color: #28a745; color: white;"><i class="fa fa-user-plus"></i> Assign</a></li>
+                                          <li class="dropdown-divider"></li>
+                                            <li class="dropdown-item"> <a asp-action="Resolve" asp-route-id="@item.Id" class="btn" style="background-color: #17a2b8; color: white;"><i class="fa fa-check-circle"></i> Resolve</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="dropdown-item"> <a asp-action="ReOpen" asp-route-id="@item.Id" class="btn" style="background-color: #28a745; color: white;"><i class="fa fa-user-plus"></i> Re-Open</a></li>
+                                            <li class="dropdown-divider"></li>
+                                        }
                                     </ul>
                                 </div>
                             </div>

@@ -73,6 +73,42 @@ namespace HelpDesk.Controllers
 
             return View(vm);
         }
+        public async Task<IActionResult> ReOpen(int? id, TicketViewModel vm)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            vm.TicketDetails = await _context.Tickets
+                .Include(t => t.CreatedBy)
+                .Include(t => t.SubCategory)
+                .Include(t => t.Status)
+                .Include(t => t.Priority)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            vm.TicketComments = await _context.Comments
+                .Include(t => t.CreatedBy)
+                .Include(t => t.Ticket)
+                .Where(t => t.TicketId == id)
+                .ToListAsync();
+
+            vm.TicketResolutions = await _context.TicketResolutions
+             .Include(t => t.CreatedBy)
+             .Include(t => t.Ticket)
+             .Include(t => t.Status)
+             .Where(t => t.TicketId == id)
+             .ToListAsync();
+
+            if (vm.TicketDetails == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["StatusId"] = new SelectList(_context.SystemCodesDetails.Include(x => x.SystemCode).Where(x => x.SystemCode.Code == "ResolutionStatus"), "Id", "Description");
+            return View(vm);
+        }
+
         public async Task<IActionResult> Resolve(int? id, TicketViewModel vm)
         {
             if (id == null)
@@ -223,6 +259,58 @@ namespace HelpDesk.Controllers
             return RedirectToAction("Details", new{ id=id});
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> ReOpenConfirmed(int id, TicketViewModel vm)
+        {
+
+            var closedstatus = await _context.SystemCodesDetails
+                .Include(x => x.SystemCode)
+                .Where(x => x.SystemCode.Code == "ResolutionStatus" && x.Code == "ReOpened")
+                .FirstOrDefaultAsync();
+
+            //Logged In User
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            TicketResolution resolution = new();
+            resolution.TicketId = id;
+            resolution.StatusId = closedstatus.Id;
+            resolution.CreatedOn = DateTime.Now;
+            resolution.CreatedById = userId;
+            resolution.Description = "Ticket Re-Opened";
+            _context.Add(resolution);
+
+
+
+            var ticket = await _context.Tickets
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+
+            ticket.StatusId = closedstatus.Id;
+            _context.Update(ticket);
+
+            await _context.SaveChangesAsync();
+
+            //Log the Audi Trail
+            var activity = new AuditTrail
+            {
+                Action = "Re-Open",
+                TimeStamp = DateTime.Now,
+                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
+                UserId = userId,
+                Module = " TicketResolutions",
+                AffectedTable = " TicketResolutions"
+
+            };
+
+            _context.Add(activity);
+            await _context.SaveChangesAsync();
+
+            TempData["MESSAGE"] = "Ticket Re-Opened successfully ";
+
+
+            return RedirectToAction("Resolve", new { id = id });
+        }
+
         [HttpPost]
         public async Task<IActionResult> ClosedConfirmed(int id, TicketViewModel vm)
         {
@@ -268,7 +356,7 @@ namespace HelpDesk.Controllers
             _context.Add(activity);
             await _context.SaveChangesAsync();
 
-            TempData["MESSAGE"] = "Ticket Closed successfully Created";
+            TempData["MESSAGE"] = "Ticket Closed successfully";
 
 
             return RedirectToAction("Resolve", new { id = id });

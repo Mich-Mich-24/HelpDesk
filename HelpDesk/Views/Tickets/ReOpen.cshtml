@@ -71,7 +71,7 @@
                             }
                         </tbody>
                     </table>
-                   
+
                 </div>
             </div>
 
@@ -97,26 +97,15 @@
                     </tbody>
                 </table>
 
-                @if ((@Model.TicketDetails.Status.Code != "Resolved") && (@Model.TicketDetails.Status.Code != "Closed"))
+                @if ((@Model.TicketDetails.Status.Code == "Closed"))
                 {
-                 <form asp-action="ResolvedConfirmed" method="post" enctype="multipart/form-data">
-                    <input type="hidden" class="hidden" asp-for="Id" />
-                    <div class="row">
-                        <label class="control-label">Ticket Status </label>
-                        <select asp-for="StatusId" class="form-control" asp-items="ViewBag.StatusId"></select>
-                    </div>
-                    <div class="row">
-                        <label class="control-label">New Ticket Resolution Comment</label>
-                        <textarea asp-for="CommentDescription" type="text" class="form-control"></textarea>
-                    </div>
-                    <button class="btn btn-primary float-end mt-5"> Add Resolution Status</button>
-                    </form>
-                }
-                @if (@Model.TicketDetails.Status.Code == "Resolved") 
-                {
-                    <form asp-action="ClosedConfirmed" method="post" enctype="multipart/form-data">
+                    <form asp-action="ReOpenConfirmed" method="post" enctype="multipart/form-data">
                         <input type="hidden" class="hidden" asp-for="Id" />
-                        <button class="btn btn-primary float-end mt-5"> Close Ticket</button>
+                        <div class="row">
+                            <label class="control-label">Ticket Re-Open Comment</label>
+                            <textarea asp-for="CommentDescription" type="text" class="form-control"></textarea>
+                        </div>
+                        <button class="btn btn-primary float-end mt-5"> Re-Open the Ticket </button>
                     </form>
                 }
             </div>
