@@ -161,6 +161,7 @@ namespace HelpDesk.Controllers
                 .Include(t => t.SubCategory)
                 .Include(t => t.Status)
                 .Include(t => t.Priority)
+                 .Include(t => t.AssignedTo)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             vm.TicketComments = await _context.Comments

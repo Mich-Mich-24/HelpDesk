@@ -52,11 +52,14 @@ namespace HelpDesk.ViewModels
         [DisplayName("Attachment")]
         public string Attachment {  get; set; }
 
+        [DisplayName("Comment Description")]
         public String CommentDescription { get; set; }
 
-        public int? AssignedToId { get; set; }
+        [DisplayName("Assign To")]
+        public string? AssignedToId { get; set; }
         public ApplicationUser AssignedTo { get; set; }
 
+        [DisplayName("Assign On")]
         public DateTime? AssignedOn { get; set; }
     }
 }

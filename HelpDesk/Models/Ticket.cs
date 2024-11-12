@@ -46,7 +46,7 @@ namespace HelpDesk.Models
 
         public ICollection<Comment> TicketComments { get; set; }
 
-        public int? AssignedToId { get; set; }
+        public string? AssignedToId { get; set; }
         public ApplicationUser AssignedTo { get; set; }
 
         public DateTime? AssignedOn { get; set; }
