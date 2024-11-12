@@ -38,6 +38,68 @@ namespace HelpDesk.Controllers
             return View(vm);
         }
 
+        public async Task<IActionResult> AssignedTickets(TicketViewModel vm)
+        {
+            var assignedstatus = await _context
+              .SystemCodesDetails
+              .Include(x => x.SystemCode)
+              .Where(x => x.SystemCode.Code == "ResolutionStatus" && x.Code == "Assigned")
+              .FirstOrDefaultAsync();
+
+            vm.Tickets = await _context.Tickets
+                .Include(t => t.CreatedBy)
+                .Include(t => t.SubCategory)
+                .Include(t => t.Priority)
+                .Include(t => t.Status)
+                .Include(t => t.TicketComments)
+                .OrderBy(x => x.CreatedOn)
+                .Where(x=>x.StatusId== assignedstatus.Id)
+                .ToListAsync();
+
+            return View(vm);
+        }
+        public async Task<IActionResult> ClosedTickets(TicketViewModel vm)
+        {
+            var closedstatus = await _context
+              .SystemCodesDetails
+              .Include(x => x.SystemCode)
+              .Where(x => x.SystemCode.Code == "ResolutionStatus" && x.Code == "Closed")
+              .FirstOrDefaultAsync();
+
+            vm.Tickets = await _context.Tickets
+                .Include(t => t.CreatedBy)
+                .Include(t => t.SubCategory)
+                .Include(t => t.Priority)
+                .Include(t => t.Status)
+                .Include(t => t.TicketComments)
+                .OrderBy(x => x.CreatedOn)
+                .Where(x => x.StatusId == closedstatus.Id)
+                .ToListAsync();
+
+            return View(vm);
+        }
+        public async Task<IActionResult> ResolvedTickets(TicketViewModel vm)
+        {
+            var resolvedstatus = await _context
+              .SystemCodesDetails
+              .Include(x => x.SystemCode)
+              .Where(x => x.SystemCode.Code == "ResolutionStatus" && x.Code == "Resolved")
+              .FirstOrDefaultAsync();
+
+            vm.Tickets = await _context.Tickets
+                .Include(t => t.CreatedBy)
+                .Include(t => t.SubCategory)
+                .Include(t => t.Priority)
+                .Include(t => t.Status)
+                .Include(t => t.TicketComments)
+                .OrderBy(x => x.CreatedOn)
+                .Where(x => x.StatusId == resolvedstatus.Id)
+                .ToListAsync();
+
+            return View(vm);
+        }
+
+
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id, TicketViewModel vm)
         {

@@ -1,0 +1,134 @@
+﻿    @model HelpDesk.ViewModels.TicketViewModel
+
+@{
+    ViewData["Title"] = "Resolved Ticket";
+}
+
+<div class="card rounded-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <h6 class="mb-0">Resolved Tickets</h6>
+        </div>
+
+        <p>
+            <a asp-action="Create" class="btn btn-primary ">Add New Ticket</a>
+        </p>
+        <table class="table table-bordered table-responsive table-hover table-responsive-lg">
+            <thead>
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Title)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PriorityId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SubCategoryId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreatedBy)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreatedOn)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StatusId)
+                    </th>
+                    <th>No Of Comments</th>
+                    <th>Actions</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Tickets)
+                {
+                    var colorcode = "Red";
+                    if (item.Status.Code == "Resolved")
+                    {
+                        colorcode = "Green";
+                    }
+                    else if (item.Status.Code == "Escalated")
+                    {
+                        colorcode = "Yellow";
+                    }
+                    else if (item.Status.Code == "InProgress")
+                    {
+                        colorcode = "Purple";
+                    }
+                    else if (item.Status.Code == "Closed")
+                    {
+                        colorcode = "Green";
+                    }
+
+                    else if (item.Status.Code == "AwaitingAssignment")
+                    {
+                        colorcode = "Red";
+                    }
+
+
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Priority.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubCategory.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedBy.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedOn)
+                        </td>
+                        <td style="background-color:@colorcode">
+                            @Html.DisplayFor(modelItem => item.Status.Description)
+                        </td>
+                        <td style="text-align:center">
+                            <a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id">  @item.TicketComments.Count() </a>
+                        </td>
+
+                        <td>
+                            <div class="input-group input-group-lg">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-primary" data-toggle="dropdown" aria-expanded="false">
+                                        Action
+                                        <span class="caret"><i class="fa fa-caret-down"></i></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+
+                                        <li class="dropdown-item"><a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id" class="btn" style="background-color: #4a90e2; color: white;"><i class="fa fa-comments"></i> Comments</a></li>
+                                        <li class="dropdown-divider"></li>
+                                        <li class="dropdown-item"><a asp-action="Details" asp-route-id="@item.Id" class="btn" style="background-color: #357ABD; color: white;"><i class="fa fa-info-circle"></i> Details</a></li>
+                                        <li class="dropdown-divider"></li>
+                                        <li class="dropdown-item"> <a asp-action="Edit" asp-route-id="@item.Id" class="btn" style="background-color: #2A5D9E; color: white;"><i class="fa fa-edit"></i> Edit</a></li>
+                                        <li class="dropdown-divider"></li>
+                                        @if (item.Status.Code != "Resolved" && item.Status.Code != "Closed")
+                                        {
+                                            <li class="dropdown-item"> <a asp-action="TicketAssignment" asp-route-id="@item.Id" class="btn" style="background-color: #28a745; color: white;"><i class="fa fa-user-plus"></i> Assign</a></li>
+                                            <li class="dropdown-divider"></li>
+                                            <li class="dropdown-item"> <a asp-action="Resolve" asp-route-id="@item.Id" class="btn" style="background-color: #17a2b8; color: white;"><i class="fa fa-check-circle"></i> Resolve</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="dropdown-item"> <a asp-action="ReOpen" asp-route-id="@item.Id" class="btn" style="background-color: #28a745; color: white;"><i class="fa fa-user-plus"></i> Re-Open</a></li>
+                                            <li class="dropdown-divider"></li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
