@@ -194,11 +194,6 @@
                         <p class="user-name mb-0" style="color: white;">@User.Identity?.Name!</p>
                     </div>
                 </div>
-
-              
-
-
-
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -209,30 +204,48 @@
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
-                                    <i class="right fas fa-angle-left"></i>
+                                 
                                 </p>
                             </a>
 
                         </li>
-                       @*  <li>
-                            <a asp-action="Index" asp-controller="Home">
-                                <div class="parent-icon">
-
-                                    <i class="bi bi-house-fail"></i>
-                                </div>
-                                <div class="menu-title">Dashboard</div>
-                            </a>
-                        </li> *@
-
+           
                         <li class="nav-item">
-                            <a asp-controller="Tickets" asp-action="Index" class="nav-link">
+                            <a href="javascript:;" class="nav-link has-arrow">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
                                     Tickets
-
+                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="" class="nav-link">
+                                        <i class="fas fa-circle nav-icon"></i>
+                                        <p>Recent Tickets</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link">
+                                        <i class="fas fa-circle nav-icon"></i>
+                                        <p>Assigned Tickets</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link">
+                                        <i class="fas fa-circle nav-icon"></i>
+                                        <p>Resolved Tickets</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="" class="nav-link">
+                                        <i class="fas fa-circle nav-icon"></i>
+                                        <p>Closed Tickets</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
+
 
                         <li class="nav-item">
                             <a asp-controller="Comments" asp-action="Index" class="nav-link">
@@ -327,9 +340,6 @@
                                 </p>
                             </a>
                         </li>
-
-
-
                    
                     </ul>
 
@@ -368,17 +378,6 @@
             </section>
         </main>
 
-       @*  <div class="content-wrapper">
-            <!-- Main content -->
-            <section class="content">
-                <div class="container-fluid">
-                    @RenderBody()
-
-
-                </div><!-- /.container-fluid -->
-            </section>
-            <!-- /.content -->
-        </div> *@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
             <strong>Copyright &copy @DateTime.Now.Year <a href=""> Designed and Developed by Michelle</a>.</strong>

@@ -204,7 +204,7 @@ namespace HelpDesk.Controllers
         public async Task<IActionResult> Create(TicketViewModel ticketvm, IFormFile attachment)
         {
 
-            if(attachment.Length > 0)
+            if(attachment != null && attachment.Length > 0)
             {
                 var filename = "Ticket_Attachment" + DateTime.Now.ToString("yyyymmddhhmmss") + "_" + attachment.FileName;
                 var path = _configuration["FileSettings:UploadsFolder"]!;
