@@ -26,15 +26,45 @@ namespace HelpDesk.Controllers
         // GET: Tickets
         public async Task<IActionResult> Index(TicketViewModel vm)
         {
-            vm.Tickets = await _context.Tickets
+            var alltickets = _context.Tickets
                 .Include(t => t.CreatedBy)
                 .Include(t=>t.SubCategory)
                 .Include(t => t.Priority)
                 .Include(t => t.Status)
                 .Include(t => t.TicketComments)
                 .OrderBy(x => x.CreatedOn)
-                .ToListAsync();
+                .AsQueryable();
 
+            if(vm != null && !string.IsNullOrEmpty(vm.Title))
+            {
+                alltickets = alltickets.Where(x => x.Title == vm.Title);
+            }
+            if (vm != null && !string.IsNullOrEmpty(vm.CreatedById))
+            {
+                alltickets = alltickets.Where(x => x.CreatedById == vm.CreatedById);
+            }
+            if (vm != null && vm.StatusId > 0)
+            {
+                alltickets = alltickets.Where(x => x.StatusId == vm.StatusId);
+            }
+            if (vm != null && vm.PriorityId > 0)
+            {
+                alltickets = alltickets.Where(x => x.PriorityId == vm.PriorityId);
+            }
+            if (vm != null && vm.CategoryId > 0)
+            {
+                alltickets = alltickets.Where(x => x.SubCategory.CategoryId == vm.CategoryId);
+            }
+
+            vm.Tickets = await alltickets.ToListAsync();
+
+
+            ViewData["PriorityId"] = new SelectList(_context.SystemCodesDetails.Include(x => x.SystemCode).Where(x => x.SystemCode.Code == "Priority"), "Id", "Description");
+            ViewData["CategoryId"] = new SelectList(_context.TicketCategories, "Id", "Name");
+            ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "FullName");
+            ViewData["StatusId"] = new SelectList(_context.SystemCodesDetails
+                .Include(x=>x.SystemCode)
+                .Where(x=>x.SystemCode.Code=="ResolutionStatus"), "Id", "Description");
             return View(vm);
         }
 

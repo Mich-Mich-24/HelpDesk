@@ -61,5 +61,8 @@ namespace HelpDesk.ViewModels
 
         [DisplayName("Assign On")]
         public DateTime? AssignedOn { get; set; }
+
+        [DisplayName(" Ticket Category")]
+        public int TicketCategoryId { get; set; }
     }
 }
