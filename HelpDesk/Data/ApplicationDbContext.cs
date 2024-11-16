@@ -26,7 +26,7 @@ namespace HelpDesk.Data
 
         public DbSet<TicketResolution> TicketResolutions { get; set; }
 
-
+       public DbSet<SystemTask> SystemTasks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
