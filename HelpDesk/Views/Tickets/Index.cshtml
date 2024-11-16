@@ -68,7 +68,8 @@
             <a asp-action="Create" class="btn btn-primary">Add New Ticket</a>
         </p>
 
-        <table class="table table-bordered table-hover table-responsive-lg">
+        <div class="card-body">
+            <table id="example1" class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>@Html.DisplayNameFor(model => model.Id)</th>
@@ -146,5 +147,6 @@
                 }
             </tbody>
         </table>
+        </div>
     </div>
 </div>
