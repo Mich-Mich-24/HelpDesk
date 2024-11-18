@@ -64,5 +64,23 @@ namespace HelpDesk.ViewModels
 
         [DisplayName(" Ticket Category")]
         public int TicketCategoryId { get; set; }
+
+        [DisplayName("Duration")]
+        public int? TicketDuration
+        {
+            get
+            {
+                if (CreatedOn == null)
+
+                    return null;
+
+                DateTime now = DateTime.UtcNow;
+
+                TimeSpan difference = now.Subtract(CreatedOn);
+
+                return difference.Days;
+
+            }
+        }
     }
 }

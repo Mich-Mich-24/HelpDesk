@@ -79,6 +79,7 @@
                     <th>@Html.DisplayNameFor(model => model.CreatedBy)</th>
                     <th>@Html.DisplayNameFor(model => model.CreatedOn)</th>
                     <th>@Html.DisplayNameFor(model => model.StatusId)</th>
+                     <th style="width: 10%;">@Html.DisplayNameFor(model => model.TicketDuration)</th>
                     <th>No Of Comments</th>
                     <th>Actions</th>
                 </tr>
@@ -101,47 +102,50 @@
                         <td>@Html.DisplayFor(modelItem => item.CreatedBy.FullName)</td>
                         <td>@Html.DisplayFor(modelItem => item.CreatedOn)</td>
                         <td style="background-color:@colorcode">@Html.DisplayFor(modelItem => item.Status.Description)</td>
+                        <td>@Html.DisplayFor(modelItem => item.TicketDuration)</td>
+
                         <td class="text-center">
                             <a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id">
                                 @item.TicketComments.Count()
                             </a>
                         </td>
                         <td>
-                            <div class="dropdown">
-                                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                    Action <span class="caret"><i class="fa fa-caret-down"></i></span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id" class="dropdown-item">
-                                        <i class="fa fa-comments"></i> Comments
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="dropdown-item">
-                                        <i class="fa fa-info-circle"></i> Details
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="dropdown-item">
-                                        <i class="fa fa-edit"></i> Edit
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    @if (item.Status.Code != "Resolved" && item.Status.Code != "Closed")
-                                    {
-                                        <a asp-action="TicketAssignment" asp-route-id="@item.Id" class="dropdown-item">
-                                            <i class="fa fa-user-plus"></i> Assign
+                                <div class="dropdown">
+                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                        Action <span class="caret"><i class="fa fa-caret-down"></i></span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id" class="dropdown-item" style="background-color: #4a90e2; color: white;">
+                                            <i class="fa fa-comments"></i> Comments
                                         </a>
                                         <div class="dropdown-divider"></div>
-                                        <a asp-action="Resolve" asp-route-id="@item.Id" class="dropdown-item">
-                                            <i class="fa fa-check-circle"></i> Resolve
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="dropdown-item" style="background-color: #357ABD; color: white;">
+                                            <i class="fa fa-info-circle"></i> Details
                                         </a>
-                                    }
-                                    else
-                                    {
-                                        <a asp-action="ReOpen" asp-route-id="@item.Id" class="dropdown-item">
-                                            <i class="fa fa-user-plus"></i> Re-Open
+                                        <div class="dropdown-divider"></div>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="dropdown-item" style="background-color: #2A5D9E; color: white;">
+                                            <i class="fa fa-edit"></i> Edit
                                         </a>
-                                    }
+                                        <div class="dropdown-divider"></div>
+                                        @if (item.Status.Code != "Resolved" && item.Status.Code != "Closed")
+                                        {
+                                            <a asp-action="TicketAssignment" asp-route-id="@item.Id" class="dropdown-item" style="background-color: #28a745; color: white;">
+                                                <i class="fa fa-user-plus"></i> Assign
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <a asp-action="Resolve" asp-route-id="@item.Id" class="dropdown-item" style="background-color: #17a2b8; color: white;">
+                                                <i class="fa fa-check-circle"></i> Resolve
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="ReOpen" asp-route-id="@item.Id" class="dropdown-item" style="background-color: #28a745; color: white;">
+                                                <i class="fa fa-user-plus"></i> Re-Open
+                                            </a>
+                                        }
+                                    </div>
                                 </div>
-                            </div>
+
                         </td>
                     </tr>
                 }
