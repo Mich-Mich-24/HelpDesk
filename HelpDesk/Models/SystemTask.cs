@@ -1,4 +1,6 @@
-﻿namespace HelpDesk.Models
+﻿using System.ComponentModel;
+
+namespace HelpDesk.Models
 {
     public class SystemTask : UserActivity
     {
@@ -14,6 +16,7 @@
 
         public ICollection<SystemTask> ChildTasks { get; }
 
+        [DisplayName("Order No")]
         public int? OrderNumber {  get; set; } 
 
 

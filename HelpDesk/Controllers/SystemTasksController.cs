@@ -24,7 +24,8 @@ namespace HelpDesk.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.SystemTasks
-                .Include(s => s.Parent);
+                .Include(s => s.Parent)
+                .Include(s => s.CreatedBy);
             return View(await applicationDbContext.ToListAsync());
         }
 
