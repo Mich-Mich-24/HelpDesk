@@ -109,40 +109,22 @@
     <div class="card-body">
         <div class="d-flex align-items-center">
             <h6 class="mb-0">Recent Tickets</h6>
-       </div>
+        </div>
 
-       <div class="table-responsive mt-2">
-            <!-- Table for Tickets -->
-            <table class="table table-bordered table-responsive table-hover table-responsive-lg">
+        <div class="card-body">
+            <table id="example1" class="table table-bordered table-striped table-sm">
                 <thead>
                     <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Id)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Title)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Description)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Priority)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Status)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CreatedBy)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CreatedOn)
-                        </th>
-                        
-
+                        <th>@Html.DisplayNameFor(model => model.Id)</th>
+                        <th>@Html.DisplayNameFor(model => model.Title)</th>
+                        <th>@Html.DisplayNameFor(model => model.Description)</th>
+                        <th>@Html.DisplayNameFor(model => model.Priority)</th>
+                        <th>@Html.DisplayNameFor(model => model.Status)</th>
+                        <th>@Html.DisplayNameFor(model => model.CreatedBy)</th>
+                        <th>@Html.DisplayNameFor(model => model.CreatedOn)</th>
                         <th>No Of Comments</th>
                         <th>Comments</th>
                         <th>View</th>
-                        <th>Edit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -165,57 +147,38 @@
                         {
                             colorcode = "Green";
                         }
-
                         else if (item.Status.Code == "AwaitingAssignment")
                         {
                             colorcode = "Red";
                         }
+
                         <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Title)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Description)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Priority.Description)
-                            </td>
-                            <td style="background-color:@colorcode">
-                                @Html.DisplayFor(modelItem => item.Status.Description)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreatedBy.FullName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreatedOn)
-                            </td>
-
+                            <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Priority.Description)</td>
+                            <td style="background-color:@colorcode">@Html.DisplayFor(modelItem => item.Status.Description)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CreatedBy.FullName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.CreatedOn)</td>
                             <td style="text-align:center">
-                                <a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id">  @item.TicketComments.Count() </a>
+                                <a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id">
+                                    @item.TicketComments.Count()
+                                </a>
                             </td>
                             <td>
-
                                 <a class="btn btn-secondary" asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id">Comments</a>
-
                             </td>
                             <td>
                                 <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Details</a>
-
-                            </td>
-                            <td>
-                                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-       </div>
+        </div>
     </div>
 </div>
+
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/series-label.js"></script>

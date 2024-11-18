@@ -28,6 +28,8 @@ namespace HelpDesk.Data
 
        public DbSet<SystemTask> SystemTasks { get; set; }
 
+       public DbSet<SystemSetting> SystemSettings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
