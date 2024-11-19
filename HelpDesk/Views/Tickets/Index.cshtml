@@ -79,8 +79,8 @@
                     <th>@Html.DisplayNameFor(model => model.CreatedBy)</th>
                     <th>@Html.DisplayNameFor(model => model.CreatedOn)</th>
                     <th>@Html.DisplayNameFor(model => model.StatusId)</th>
-                     <th style="width: 10%;">@Html.DisplayNameFor(model => model.TicketDuration)</th>
                     <th>No Of Comments</th>
+                    <th>Duration</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -102,14 +102,22 @@
                         <td>@Html.DisplayFor(modelItem => item.CreatedBy.FullName)</td>
                         <td>@Html.DisplayFor(modelItem => item.CreatedOn)</td>
                         <td style="background-color:@colorcode">@Html.DisplayFor(modelItem => item.Status.Description)</td>
-                        <td>@Html.DisplayFor(modelItem => item.TicketDuration)</td>
-
                         <td class="text-center">
                             <a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id">
                                 @item.TicketComments.Count()
                             </a>
                         </td>
-                        <td>
+                            @if(Convert.ToInt32(@Model.MainDuration.Value) > item.TicketDuration)
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.TicketDuration) - Days
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="background-color:red">@Html.DisplayFor(modelItem => item.TicketDuration) - Days </td>
+                            }
+                            <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
                                         Action <span class="caret"><i class="fa fa-caret-down"></i></span>
