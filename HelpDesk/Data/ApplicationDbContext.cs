@@ -30,8 +30,13 @@ namespace HelpDesk.Data
 
        public DbSet<SystemSetting> SystemSettings { get; set; }
 
+       public DbSet<UserRoleProfile> UserRoleProfiles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
+
+
             base.OnModelCreating(builder);
 
             builder.Entity<Comment>()
@@ -87,6 +92,18 @@ namespace HelpDesk.Data
       .WithMany()
       .HasForeignKey(c => c.PriorityId)
       .OnDelete(DeleteBehavior.Restrict);
+
+
+            // Configure composite key for UserRoleProfile
+            builder.Entity<UserRoleProfile>()
+                .HasKey(c => new { c.TaskId, c.RoleId });
+
+            // Optional: Configure foreign key relationships
+            builder.Entity<UserRoleProfile>()
+                .HasOne(c => c.Task) // Navigation property
+                .WithMany() // Assuming no inverse navigation property
+                .HasForeignKey(c => c.TaskId) // Foreign key
+                .OnDelete(DeleteBehavior.Restrict);
 
         }
     }
