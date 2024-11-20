@@ -1,6 +1,7 @@
 ﻿using HelpDesk.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace HelpDesk.Data
 {
@@ -110,6 +111,11 @@ namespace HelpDesk.Data
              .WithMany() // Assuming no inverse navigation property
              .HasForeignKey(c => c.RoleId) // Foreign key
              .OnDelete(DeleteBehavior.Restrict);
+
+             builder.Entity<ApplicationUser>()
+           .HasOne(c => c.Gender)
+           .WithMany() 
+           .HasForeignKey(c => c.GenderId);
 
         }
     }

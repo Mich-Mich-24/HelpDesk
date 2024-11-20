@@ -3,6 +3,7 @@ using HelpDesk.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -28,7 +29,10 @@ namespace HelpDesk.Controllers
         // GET: UsesController
         public async Task<ActionResult> Index()
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _context.Users
+                .Include(x=>x.Role)
+                .Include(x=>x.Gender)
+                .ToListAsync();
             return View(users);
         }
 
@@ -41,6 +45,10 @@ namespace HelpDesk.Controllers
         // GET: UsesController/Create
         public ActionResult Create()
         {
+            ViewData["GenderId"] = new SelectList(_context.SystemCodesDetails
+                .Include(x=>x.SystemCode)
+                .Where(x=>x.SystemCode.Code =="Gender"), "Id", "Description");
+            ViewData["RoleId"] = new SelectList(_context.Roles.ToList(), "Id", "Name");
             return View();
         }
 
@@ -61,7 +69,8 @@ namespace HelpDesk.Controllers
                 registeduser.NormalizedUserName = user.NormalizedUserName;
                 registeduser.Email = user.Email;
                 registeduser.EmailConfirmed = true;
-                registeduser.Gender = user.Gender;
+                registeduser.GenderId = user.GenderId;
+                registeduser.RoleId = user.RoleId;
                 registeduser.Country = user.Country;
                 registeduser.City = user.City;
                 registeduser.PhoneNumber = user.PhoneNumber;

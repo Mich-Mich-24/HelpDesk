@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
 
 namespace HelpDesk.Models
 {
@@ -9,12 +10,19 @@ namespace HelpDesk.Models
 
         public string LastName { get; set; }
 
-        public string Gender { get; set; }
+        [DisplayName("Gender")]
+        public int? GenderId { get; set; }
+        public SystemCodeDetail Gender {  get; set; }
 
       
         public string Country { get; set; }
         public string City { get; set; }
 
         public string FullName => $"{FirstName} {MiddleName} {LastName}";
+
+        [DisplayName("Role Name")]
+        public string? RoleId { get; set; }
+
+        public IdentityRole Role { get; set; }
     }
 }
