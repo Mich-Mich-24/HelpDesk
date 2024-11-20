@@ -105,6 +105,12 @@ namespace HelpDesk.Data
                 .HasForeignKey(c => c.TaskId) // Foreign key
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<UserRoleProfile>()
+             .HasOne(c => c.Role) // Navigation property
+             .WithMany() // Assuming no inverse navigation property
+             .HasForeignKey(c => c.RoleId) // Foreign key
+             .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

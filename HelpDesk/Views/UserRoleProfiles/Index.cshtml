@@ -1,0 +1,77 @@
+﻿@model IEnumerable<HelpDesk.Models.UserRoleProfile>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="card rounded-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <h6 class="mb-0">Recent Role Profile</h6>
+        </div>
+
+        <p>
+            <a class="btn btn-primary" asp-action="Create">Add New Role Profile</a>
+        </p>
+
+        <div class="card-body">
+            <table id="example1" class="table table-bordered table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Task)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Role)
+                        </th>
+                        <td>
+                            @Html.DisplayNameFor(model => model.CreatedBy.Id)
+                        </td>
+                        <!-- Created On -->
+                        <td>
+                            @Html.DisplayNameFor(model => model.CreatedOn)
+                        </td>
+                        <th>View</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Task.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Role.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedBy.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedOn)
+                            </td>
+                           
+                            <td>
+                                <a class="btn btn-warning btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

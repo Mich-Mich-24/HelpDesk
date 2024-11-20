@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace HelpDesk.Models
@@ -15,7 +16,8 @@ namespace HelpDesk.Models
         [DisplayName("System Role")]
         public string RoleId { get; set; }
 
-        
+        public IdentityRole Role { get; set; } // Add navigation property
+
 
     }
 }
