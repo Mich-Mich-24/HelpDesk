@@ -29,6 +29,17 @@ namespace HelpDesk.Controllers
             return View(await countries.ToListAsync());
         }
 
+        public async Task<IActionResult> CountryCities(int id)
+        {
+            var cities = await _context.Cities
+                .Include(c => c.Country)
+                .Include(c => c.CreatedBy)
+                .Include(c => c.ModifiedBy)
+                .Where(x=>x.CountryId==id)
+                .ToListAsync();
+            return View(cities);
+        }
+
         // GET: Countries/Details/5
         public async Task<IActionResult> Details(int? id)
         {
