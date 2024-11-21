@@ -9,6 +9,7 @@ using HelpDesk.Data;
 using HelpDesk.Models;
 using System.Security.Claims;
 using HelpDesk.ViewModels;
+using HelpDesk.AuditsManager;
 
 namespace HelpDesk.Controllers
 {
@@ -419,20 +420,7 @@ namespace HelpDesk.Controllers
             _context.Add(ticket);
             await _context.SaveChangesAsync();
 
-            //Log the Audi Trail
-            var activity = new AuditTrail
-            {
-                Action = "Create",
-                TimeStamp = DateTime.Now,
-                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                UserId = userId,
-                Module = "Tickets",
-                AffectedTable = "Tickets"
-
-            };
-
-            _context.Add(activity);
-            await _context.SaveChangesAsync();
+          
 
             TempData["MESSAGE"] = "Ticket Details successfully Created";
 
@@ -460,20 +448,7 @@ namespace HelpDesk.Controllers
             _context.Add(newcomment);
             await _context.SaveChangesAsync();
 
-            //Log the Audi Trail
-            var activity = new AuditTrail
-            {
-                Action = "Create",
-                TimeStamp = DateTime.Now,
-                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                UserId = userId,
-                Module = "Comments",
-                AffectedTable = "comments"
-
-            };
-
-            _context.Add(activity);
-            await _context.SaveChangesAsync();
+         
 
             TempData["MESSAGE"] = "Comment Details successfully Created";
 
@@ -512,20 +487,7 @@ namespace HelpDesk.Controllers
 
             await _context.SaveChangesAsync();
 
-            //Log the Audi Trail
-            var activity = new AuditTrail
-            {
-                Action = "Re-Open",
-                TimeStamp = DateTime.Now,
-                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                UserId = userId,
-                Module = " TicketResolutions",
-                AffectedTable = " TicketResolutions"
-
-            };
-
-            _context.Add(activity);
-            await _context.SaveChangesAsync();
+        
 
             TempData["MESSAGE"] = "Ticket Assigned successfully ";
 
@@ -562,20 +524,7 @@ namespace HelpDesk.Controllers
 
             await _context.SaveChangesAsync();
 
-            //Log the Audi Trail
-            var activity = new AuditTrail
-            {
-                Action = "Re-Open",
-                TimeStamp = DateTime.Now,
-                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                UserId = userId,
-                Module = " TicketResolutions",
-                AffectedTable = " TicketResolutions"
-
-            };
-
-            _context.Add(activity);
-            await _context.SaveChangesAsync();
+           
 
             TempData["MESSAGE"] = "Ticket Re-Opened successfully ";
 
@@ -613,20 +562,7 @@ namespace HelpDesk.Controllers
 
             await _context.SaveChangesAsync();
 
-            //Log the Audi Trail
-            var activity = new AuditTrail
-            {
-                Action = "Closed",
-                TimeStamp = DateTime.Now,
-                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                UserId = userId,
-                Module = " TicketResolutions",
-                AffectedTable = " TicketResolutions"
-
-            };
-
-            _context.Add(activity);
-            await _context.SaveChangesAsync();
+         
 
             TempData["MESSAGE"] = "Ticket Closed successfully";
 
@@ -659,20 +595,7 @@ namespace HelpDesk.Controllers
 
             await _context.SaveChangesAsync();
 
-            //Log the Audi Trail
-            var activity = new AuditTrail
-            {
-                Action = "Create",
-                TimeStamp = DateTime.Now,
-                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                UserId = userId,
-                Module = " TicketResolutions",
-                AffectedTable = " TicketResolutions"
-
-            };
-
-            _context.Add(activity);
-            await _context.SaveChangesAsync();
+          
 
             TempData["MESSAGE"] = "Ticket Resolution Details successfully Created";
 

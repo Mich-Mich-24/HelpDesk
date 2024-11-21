@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using HelpDesk.Data;
 using HelpDesk.Models;
+using HelpDesk.AuditsManager;
 using System.Security.Claims;
 
 namespace HelpDesk.Controllers
@@ -69,20 +70,7 @@ namespace HelpDesk.Controllers
 
                 _context.Add(systemCode);
                 await _context.SaveChangesAsync();
-
-
-                //Log the Audi Trail
-                var activity = new AuditTrail
-                {
-                    Action = "Create",
-                    TimeStamp = DateTime.Now,
-                    IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                    UserId = userId,
-                    Module = "SystemCodes",
-                    AffectedTable = "SystemCodes"
-
-                };
-
+             
                 return RedirectToAction(nameof(Index));
             
             return View(systemCode);
@@ -127,17 +115,7 @@ namespace HelpDesk.Controllers
                     _context.Update(systemCode);
                     await _context.SaveChangesAsync();
 
-                    //Log the Audi Trail
-                    var activity = new AuditTrail
-                    {
-                        Action = "Update",
-                        TimeStamp = DateTime.Now,
-                        IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                        UserId = userId,
-                        Module = "SystemCodes",
-                        AffectedTable = "SystemCodes"
-
-                    };
+                  
                 }
                 catch (DbUpdateConcurrencyException)
                 {

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HelpDesk.Data;
 using HelpDesk.Models;
 using System.Security.Claims;
+using HelpDesk.AuditsManager;
 
 namespace HelpDesk.Controllers
 {
@@ -80,20 +81,7 @@ namespace HelpDesk.Controllers
             _context.Add(comment);
                 await _context.SaveChangesAsync();
 
-            //Log the Audi Trail
-            var activity = new AuditTrail
-            {
-                Action = "Create",
-                TimeStamp = DateTime.Now,
-                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                UserId = userId,
-                Module = "Comments",
-                AffectedTable = "comments"
-
-            };
-
-            _context.Add(activity);
-            await _context.SaveChangesAsync();
+          
 
             TempData["MESSAGE"] = "Comment Details successfully Created";
 

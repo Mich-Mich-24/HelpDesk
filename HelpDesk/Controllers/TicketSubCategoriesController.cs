@@ -94,23 +94,10 @@ namespace HelpDesk.Controllers
 
             ticketSubCategory.Id = 0;
             ticketSubCategory.CategoryId = id;
-                _context.Add(ticketSubCategory);
-                await _context.SaveChangesAsync();
+             _context.Add(ticketSubCategory);
+              await _context.SaveChangesAsync(loggedInUser);
 
-            //Log the Audi Trail
-            var activity = new AuditTrail
-            {
-                Action = "Create",
-                TimeStamp = DateTime.Now,
-                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                UserId = loggedInUser,
-                Module = "Ticket Sub-Categories",
-                AffectedTable = "TicketSubCategories"
-
-            };
-
-            _context.Add(activity);
-            await _context.SaveChangesAsync();
+          
 
             TempData["MESSAGE"] = "Ticket Sub Category  Details successfully Created";
             return RedirectToAction("Index", new { id=id});

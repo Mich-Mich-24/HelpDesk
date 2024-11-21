@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using HelpDesk.AuditsManager;
 using System.Security.Claims;
 
 namespace HelpDesk.Controllers
@@ -78,21 +79,6 @@ namespace HelpDesk.Controllers
                 var result = await _userManager.CreateAsync(registeduser, user.PasswordHash);
                 if (result.Succeeded)
                 {
-
-                    //Log the Audi Trail
-                    var activity = new AuditTrail
-                    {
-                        Action = "Create",
-                        TimeStamp = DateTime.Now,
-                        IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString(),
-                        UserId = userId,
-                        Module = "Users",
-                        AffectedTable = "Users"
-
-                    };
-
-                    _context.Add(activity);
-                    await _context.SaveChangesAsync();
 
                     TempData["MESSAGE"] = "User Details successfully Created";
 

@@ -18,7 +18,6 @@
                         <th style="width: 15%;">@Html.DisplayNameFor(model => model.Module)</th>
                         <th style="width: 20%;">@Html.DisplayNameFor(model => model.AffectedTable)</th>
                         <th style="width: 15%;">@Html.DisplayNameFor(model => model.TimeStamp)</th>
-                        <th style="width: 15%;">@Html.DisplayNameFor(model => model.IpAddress)</th>
                         <th style="width: 15%;">@Html.DisplayNameFor(model => model.User)</th>
                         <th style="width: 5%;">View</th>
                     </tr>
@@ -31,7 +30,6 @@
                             <td>@Html.DisplayFor(modelItem => item.Module)</td>
                             <td>@Html.DisplayFor(modelItem => item.AffectedTable)</td>
                             <td>@Html.DisplayFor(modelItem => item.TimeStamp)</td>
-                            <td>@Html.DisplayFor(modelItem => item.IpAddress)</td>
                             <td>@Html.DisplayFor(modelItem => item.User.FullName)</td>
                             <td>
                                 <a class="btn btn-warning btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>
