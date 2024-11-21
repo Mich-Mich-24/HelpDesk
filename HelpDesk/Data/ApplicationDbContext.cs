@@ -33,6 +33,10 @@ namespace HelpDesk.Data
 
        public DbSet<UserRoleProfile> UserRoleProfiles { get; set; }
 
+       public DbSet<Country> Countries { get; set; }
+
+       public DbSet<City> Cities { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
@@ -117,6 +121,12 @@ namespace HelpDesk.Data
            .WithMany() 
            .HasForeignKey(c => c.GenderId);
 
+
+            builder.Entity<City>()
+       .HasOne(c => c.Country)
+       .WithMany()
+       .HasForeignKey(c => c.CountryId)
+       .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

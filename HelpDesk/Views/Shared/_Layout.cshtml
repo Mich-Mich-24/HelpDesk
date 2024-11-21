@@ -209,166 +209,148 @@
                             </a>
 
                         </li>
-           
+
                         <li class="nav-item">
                             <a href="javascript:;" class="nav-link has-arrow">
-                                <i class="nav-icon fas fa-th"></i>
+                                <i class="nav-icon fas fa-ticket-alt"></i>
                                 <p>
                                     Tickets
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item">
+                                <li class="nav-item" style="background-color: #001f3f;">
                                     <a asp-action="Index" asp-controller="Tickets" class="nav-link">
-                                        <i class="fas fa-circle nav-icon"></i>
+                                        <i class="fas fa-clock nav-icon"></i>
                                         <p>Recent Tickets</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" style="background-color: #001f3f;">
                                     <a asp-action="AssignedTickets" asp-controller="Tickets" class="nav-link">
-                                        <i class="fas fa-circle nav-icon"></i>
+                                        <i class="fas fa-user-check nav-icon"></i>
                                         <p>Assigned Tickets</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" style="background-color: #001f3f;">
                                     <a asp-action="ResolvedTickets" asp-controller="Tickets" class="nav-link">
-                                        <i class="fas fa-circle nav-icon"></i>
+                                        <i class="fas fa-check-circle nav-icon"></i>
                                         <p>Resolved Tickets</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" style="background-color: #001f3f;">
                                     <a asp-action="ClosedTickets" asp-controller="Tickets" class="nav-link">
-                                        <i class="fas fa-circle nav-icon"></i>
+                                        <i class="fas fa-lock nav-icon"></i>
                                         <p>Closed Tickets</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
 
-
                         <li class="nav-item">
                             <a asp-controller="Comments" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Ticket Comments
-
-                                </p>
+                                <i class="nav-icon fas fa-comments"></i>
+                                <p>Ticket Comments</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a asp-controller="TicketCategories" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Ticket Categories
-
-                                </p>
+                                <i class="nav-icon fas fa-tags"></i>
+                                <p>Ticket Categories</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a asp-controller="TicketSubCategories" asp-action="SubCategories" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Ticket Sub-Categories
-
-                                </p>
+                                <i class="nav-icon fas fa-list-alt"></i>
+                                <p>Ticket Sub-Categories</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a asp-controller="AuditTrails" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                   Audit Trails
-
-                                </p>
+                                <i class="nav-icon fas fa-history"></i>
+                                <p>Audit Trails</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a asp-controller="Users" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    System Users
-
-                                </p>
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>System Users</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a asp-controller="SystemCodes" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    System Codes
-
-                                </p>
+                                <i class="nav-icon fas fa-code"></i>
+                                <p>System Codes</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a asp-controller="SystemCodeDetails" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    System Codes Details
-
-                                </p>
+                                <i class="nav-icon fas fa-info-circle"></i>
+                                <p>System Codes Details</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a asp-controller="Roles" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    System Roles
-
-                                </p>
+                                <i class="nav-icon fas fa-user-shield"></i>
+                                <p>System Roles</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a asp-controller="Departments" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Departments
-
-                                </p>
+                                <i class="nav-icon fas fa-building"></i>
+                                <p>Departments</p>
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a asp-controller="SystemTasks" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    System Tasks
-
-                                </p>
+                                <i class="nav-icon fas fa-tasks"></i>
+                                <p>System Tasks</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a asp-controller="SystemSettings" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    System Settings
+                            <a asp-controller="Cities" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fas fa-city"></i>
+                                <p>Cities</p>
+                            </a>
+                        </li>
 
-                                </p>
+                        <li class="nav-item">
+                            <a asp-controller="Countries" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fas fa-globe"></i>
+                                <p>Countries</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a asp-controller="UserRoleProfiles" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Role Profiles
+                                <i class="nav-icon fas fa-id-badge"></i>
+                                <p>Role Profiles</p>
+                            </a>
+                        </li>
 
-                                </p>
+                        <li class="nav-item">
+                            <a asp-controller="SystemSettings" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <p>System Settings</p>
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index")" class="nav-link">
-                                <i class="nav-icon fas fa-lock"></i>
-                                <p>
-                                    Logout
-                                </p>
+                                <i class="nav-icon fas fa-sign-out-alt"></i>
+                                <p>Logout</p>
                             </a>
                         </li>
+
                    
                     </ul>
 
