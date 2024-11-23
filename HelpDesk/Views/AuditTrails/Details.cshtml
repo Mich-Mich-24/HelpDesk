@@ -12,6 +12,7 @@
         <hr />
         <table class="table table-bordered table-hover table-responsive-lg">
             <tr>
+                <th>@Html.DisplayNameFor(model => model.Id)</th>
                 <th>@Html.DisplayNameFor(model => model.Action)</th>
                 <td>@Html.DisplayFor(model => model.Action)</td>
             </tr>
@@ -30,6 +31,26 @@
             <tr>
                 <th>@Html.DisplayNameFor(model => model.User)</th>
                 <td>@Html.DisplayFor(model => model.User.FullName)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.TimeStamp)</th>
+                <td>@Html.DisplayFor(model => model.TimeStamp)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.OldValues)</th>
+                <td>@Html.DisplayFor(model => model.OldValues)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.NewValues)</th>
+                <td>@Html.DisplayFor(model => model.NewValues)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.AffectedColumns)</th>
+                <td>@Html.DisplayFor(model => model.AffectedColumns)</td>
+            </tr>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.PrimaryKey)</th>
+                <td>@Html.DisplayFor(model => model.PrimaryKey)</td>
             </tr>
         </table>
 
