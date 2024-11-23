@@ -135,8 +135,6 @@ namespace HelpDesk.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     var loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -144,7 +142,7 @@ namespace HelpDesk.Controllers
                     ticketSubCategory.ModifiedOn = DateTime.Now;
 
                     _context.Update(ticketSubCategory);
-                    await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(loggedInUser);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -156,7 +154,7 @@ namespace HelpDesk.Controllers
                     {
                         throw;
                     }
-                }
+          
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.TicketCategories, "Id", "Id", ticketSubCategory.CategoryId);
@@ -191,13 +189,14 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var ticketSubCategory = await _context.TicketSubCategories.FindAsync(id);
             if (ticketSubCategory != null)
             {
                 _context.TicketSubCategories.Remove(ticketSubCategory);
             }
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(loggedInUser);
             return RedirectToAction(nameof(Index));
         }
 

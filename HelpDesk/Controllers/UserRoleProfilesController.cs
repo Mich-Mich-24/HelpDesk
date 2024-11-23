@@ -170,13 +170,15 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var userRoleProfile = await _context.UserRoleProfiles.FindAsync(id);
             if (userRoleProfile != null)
             {
                 _context.UserRoleProfiles.Remove(userRoleProfile);
             }
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(userId);
             return RedirectToAction(nameof(Index));
         }
 

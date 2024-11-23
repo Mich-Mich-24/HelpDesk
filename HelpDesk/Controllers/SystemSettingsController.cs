@@ -107,8 +107,7 @@ namespace HelpDesk.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+          
                 try
                 {
                     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -116,7 +115,7 @@ namespace HelpDesk.Controllers
                     systemSetting.ModifiedById = userId;
 
                     _context.Update(systemSetting);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync(userId);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -130,7 +129,7 @@ namespace HelpDesk.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+
             ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "Id", systemSetting.CreatedById);
             ViewData["ModifiedById"] = new SelectList(_context.Users, "Id", "Id", systemSetting.ModifiedById);
             return View(systemSetting);
@@ -161,13 +160,14 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var systemSetting = await _context.SystemSettings.FindAsync(id);
             if (systemSetting != null)
             {
                 _context.SystemSettings.Remove(systemSetting);
             }
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(userId);
             return RedirectToAction(nameof(Index));
         }
 

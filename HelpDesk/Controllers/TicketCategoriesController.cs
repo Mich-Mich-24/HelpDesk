@@ -67,7 +67,7 @@ namespace HelpDesk.Controllers
             ticketCategory.CreatedById = userId;
 
                 _context.Add(ticketCategory);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(userId);
 
             TempData["MESSAGE"] = "Ticket Category Details successfully Created";
             return RedirectToAction(nameof(Index));
@@ -114,7 +114,7 @@ namespace HelpDesk.Controllers
                 ticketCategory.ModifiedById = userId;
 
                 _context.Update(ticketCategory);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync(userId);
 
                 TempData["MESSAGE"] = "Ticket Category Details successfully Updated";
              }
@@ -160,13 +160,14 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var ticketCategory = await _context.TicketCategories.FindAsync(id);
             if (ticketCategory != null)
             {
                 _context.TicketCategories.Remove(ticketCategory);
             }
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(userId);
             return RedirectToAction(nameof(Index));
         }
 

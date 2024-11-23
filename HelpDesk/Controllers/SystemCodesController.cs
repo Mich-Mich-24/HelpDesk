@@ -104,8 +104,7 @@ namespace HelpDesk.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+         
                 try
                 {
                     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -113,7 +112,7 @@ namespace HelpDesk.Controllers
                     systemCode.ModifiedById = userId;
 
                     _context.Update(systemCode);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync(userId);
 
                   
                 }
@@ -129,7 +128,7 @@ namespace HelpDesk.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+         
             return View(systemCode);
         }
 
@@ -156,13 +155,14 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var systemCode = await _context.SystemCodes.FindAsync(id);
             if (systemCode != null)
             {
                 _context.SystemCodes.Remove(systemCode);
             }
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(userId);
             return RedirectToAction(nameof(Index));
         }
 

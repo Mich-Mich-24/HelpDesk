@@ -10,6 +10,7 @@ using HelpDesk.Models;
 using System.Security.Claims;
 using HelpDesk.ViewModels;
 using HelpDesk.AuditsManager;
+using HelpDesk.Data.Migrations;
 
 namespace HelpDesk.Controllers
 {
@@ -625,19 +626,20 @@ namespace HelpDesk.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Status,Priority,CreatedById,CreatedOn")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id,Ticket ticket)
         {
             if (id != ticket.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+         
                 try
                 {
-                    _context.Update(ticket);
-                    await _context.SaveChangesAsync();
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                _context.Update(ticket);
+                    await _context.SaveChangesAsync(userId);
                     TempData["MESSAGE"] = "Ticket Details successfully Updated";
                 }
                 catch (DbUpdateConcurrencyException)
@@ -652,7 +654,7 @@ namespace HelpDesk.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+       
             ViewData["CreatedById"] = new SelectList(_context.Users, "Id", "FullName", ticket.CreatedById);
             return View(ticket);
         }
@@ -681,13 +683,15 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var ticket = await _context.Tickets.FindAsync(id);
             if (ticket != null)
             {
                 _context.Tickets.Remove(ticket);
             }
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(userId);
             return RedirectToAction(nameof(Index));
         }
 

@@ -112,34 +112,34 @@ namespace HelpDesk.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+
+            try
             {
-                try
+
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                systemCodeDetail.ModifiedOn = DateTime.Now;
+                systemCodeDetail.ModifiedById = userId;
+
+                _context.Update(systemCodeDetail);
+                await _context.SaveChangesAsync(userId);
+
+
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!SystemCodeDetailExists(systemCodeDetail.Id))
                 {
-
-                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    systemCodeDetail.ModifiedOn = DateTime.Now;
-                    systemCodeDetail.ModifiedById = userId;
-
-                    _context.Update(systemCodeDetail);
-                    await _context.SaveChangesAsync();
-
-                 
-
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!SystemCodeDetailExists(systemCodeDetail.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["SystemCodeId"] = new SelectList(_context.SystemCodes, "Id", "Decription", systemCodeDetail.SystemCodeId);
             return View(systemCodeDetail);
         }
@@ -168,13 +168,14 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var systemCodeDetail = await _context.SystemCodesDetails.FindAsync(id);
             if (systemCodeDetail != null)
             {
                 _context.SystemCodesDetails.Remove(systemCodeDetail);
             }
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(userId);
             return RedirectToAction(nameof(Index));
         }
 
