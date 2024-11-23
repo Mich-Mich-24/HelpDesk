@@ -38,7 +38,7 @@ namespace HelpDesk.Data
 
        public DbSet<City> Cities { get; set; }
 
-       public virtual async Task<int> SaveChangedAsync(string userid = null)
+       public virtual async Task<int> SaveChangesAsync(string userid = null)
         {
             OnBeforeSaveChanges(userid);
             var result = await base.SaveChangesAsync();

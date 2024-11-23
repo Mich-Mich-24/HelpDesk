@@ -67,7 +67,7 @@ namespace HelpDesk.Controllers
             department.CreatedOn = DateTime.Now;
             department.CreatedById = userId;
                 _context.Add(department);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(userId);
                 return RedirectToAction(nameof(Index));
             
        
@@ -110,7 +110,7 @@ namespace HelpDesk.Controllers
                     department.ModifiedOn = DateTime.Now;
                     department.ModifiedById = userId;
                     _context.Update(department);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync(userId);
                 }
                 catch (DbUpdateConcurrencyException)
                 {

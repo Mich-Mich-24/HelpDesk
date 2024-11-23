@@ -69,7 +69,7 @@ namespace HelpDesk.Controllers
                 systemCode.CreatedById = userId;
 
                 _context.Add(systemCode);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(userId);
              
                 return RedirectToAction(nameof(Index));
             

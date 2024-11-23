@@ -79,7 +79,7 @@ namespace HelpDesk.Controllers
             country.CreatedById = userId;
 
             _context.Add(country);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(userId);
                 return RedirectToAction(nameof(Index));
          
         
@@ -124,7 +124,7 @@ namespace HelpDesk.Controllers
 
 
                 _context.Update(country);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync(userId);
                 }
                 catch (DbUpdateConcurrencyException)
                 {

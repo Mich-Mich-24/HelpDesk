@@ -418,7 +418,7 @@ namespace HelpDesk.Controllers
             ticket.CreatedOn = DateTime.Now;
             ticket.CreatedById = userId;
             _context.Add(ticket);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(userId);
 
           
 
@@ -446,7 +446,7 @@ namespace HelpDesk.Controllers
             newcomment.CreatedById = userId;
             newcomment.Description = vm.CommentDescription;
             _context.Add(newcomment);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(userId);
 
          
 
@@ -485,7 +485,7 @@ namespace HelpDesk.Controllers
             ticket.AssignedOn = DateTime.Now;
             _context.Update(ticket);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(userId);
 
         
 
@@ -522,7 +522,7 @@ namespace HelpDesk.Controllers
             ticket.StatusId = closedstatus.Id;
             _context.Update(ticket);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(userId);
 
            
 
@@ -560,7 +560,7 @@ namespace HelpDesk.Controllers
             ticket.StatusId = closedstatus.Id;
             _context.Update(ticket);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(userId);
 
          
 
@@ -593,7 +593,7 @@ namespace HelpDesk.Controllers
             ticket.StatusId = vm.StatusId;
             _context.Update(ticket);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(userId);
 
           
 

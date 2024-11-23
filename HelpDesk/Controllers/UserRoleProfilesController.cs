@@ -75,7 +75,7 @@ namespace HelpDesk.Controllers
             userRoleProfile.CreatedById = userId;
 
             _context.Add(userRoleProfile);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(userId);
                 return RedirectToAction(nameof(Index));
          
           
@@ -122,7 +122,7 @@ namespace HelpDesk.Controllers
                 userRoleProfile.ModifiedById = userId;
 
                 _context.Update(userRoleProfile);
-                    await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync(userId);
                 }
                 catch (DbUpdateConcurrencyException)
                 {

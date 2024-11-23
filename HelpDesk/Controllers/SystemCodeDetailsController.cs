@@ -73,7 +73,7 @@ namespace HelpDesk.Controllers
 
 
                 _context.Add(systemCodeDetail);
-               await _context.SaveChangesAsync();
+               await _context.SaveChangesAsync(userId);
 
          
 
