@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HelpDesk.Data;
 using HelpDesk.Models;
 using System.Security.Claims;
+using HelpDesk.Services;
 
 namespace HelpDesk.Controllers
 {
@@ -74,7 +75,7 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create( Country country)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetUserId();
             country.CreatedOn = DateTime.Now;
             country.CreatedById = userId;
 
@@ -120,7 +121,7 @@ namespace HelpDesk.Controllers
            
                 try
                 {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = User.GetUserId();
                 country.ModifiedOn = DateTime.Now;
                 country.ModifiedById = userId;
 
@@ -171,7 +172,7 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetUserId();
             var country = await _context.Countries.FindAsync(id);
             if (country != null)
             {

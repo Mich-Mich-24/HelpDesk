@@ -9,6 +9,7 @@ using HelpDesk.Data;
 using HelpDesk.Models;
 using System.Security.Claims;
 using HelpDesk.ViewModels;
+using HelpDesk.Services;
 
 namespace HelpDesk.Controllers
 {
@@ -88,14 +89,14 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int id,  TicketSubCategory ticketSubCategory)
         {
-            var loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            ticketSubCategory.CreatedById = loggedInUser;
+            var userId = User.GetUserId();
+            ticketSubCategory.CreatedById = userId;
             ticketSubCategory.CreatedOn = DateTime.Now;
 
             ticketSubCategory.Id = 0;
             ticketSubCategory.CategoryId = id;
              _context.Add(ticketSubCategory);
-              await _context.SaveChangesAsync(loggedInUser);
+              await _context.SaveChangesAsync(userId);
 
           
 
@@ -137,12 +138,12 @@ namespace HelpDesk.Controllers
 
                 try
                 {
-                    var loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    ticketSubCategory.ModifiedById = loggedInUser;
+                var userId = User.GetUserId();
+                    ticketSubCategory.ModifiedById = userId;
                     ticketSubCategory.ModifiedOn = DateTime.Now;
 
                     _context.Update(ticketSubCategory);
-                await _context.SaveChangesAsync(loggedInUser);
+                await _context.SaveChangesAsync(userId);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -189,14 +190,14 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var loggedInUser = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetUserId();
             var ticketSubCategory = await _context.TicketSubCategories.FindAsync(id);
             if (ticketSubCategory != null)
             {
                 _context.TicketSubCategories.Remove(ticketSubCategory);
             }
 
-            await _context.SaveChangesAsync(loggedInUser);
+            await _context.SaveChangesAsync(userId);
             return RedirectToAction(nameof(Index));
         }
 

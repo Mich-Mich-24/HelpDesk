@@ -9,6 +9,7 @@ using HelpDesk.Data;
 using HelpDesk.Models;
 using System.Security.Claims;
 using HelpDesk.AuditsManager;
+using HelpDesk.Services;
 
 namespace HelpDesk.Controllers
 {
@@ -73,9 +74,7 @@ namespace HelpDesk.Controllers
         public async Task<IActionResult> Create( Comment comment)
         {
             //Logged In User
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-
+            var userId = User.GetUserId();
             comment.CreatedOn = DateTime.Now;
             comment.CreatedById = userId;
             _context.Add(comment);
@@ -173,7 +172,7 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetUserId();
 
             var comment = await _context.Comments.FindAsync(id);
             if (comment != null)

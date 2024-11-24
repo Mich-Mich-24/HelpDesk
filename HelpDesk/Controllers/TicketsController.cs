@@ -12,6 +12,7 @@ using HelpDesk.ViewModels;
 using HelpDesk.AuditsManager;
 using HelpDesk.Data.Migrations;
 using AutoMapper;
+using HelpDesk.Services;
 
 namespace HelpDesk.Controllers
 {
@@ -438,7 +439,7 @@ namespace HelpDesk.Controllers
         {
 
             //Logged In User
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetUserId();
             Comment newcomment = new();
             newcomment.TicketId = id;
             newcomment.CreatedOn = DateTime.Now;
@@ -464,7 +465,7 @@ namespace HelpDesk.Controllers
                 .FirstOrDefaultAsync();
 
             //Logged In User
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetUserId();
             TicketResolution resolution = new();
             resolution.TicketId = id;
             resolution.StatusId = reassignedstatus.Id;
@@ -503,7 +504,7 @@ namespace HelpDesk.Controllers
                 .FirstOrDefaultAsync();
 
             //Logged In User
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetUserId();
             TicketResolution resolution = new();
             resolution.TicketId = id;
             resolution.StatusId = closedstatus.Id;
@@ -541,7 +542,7 @@ namespace HelpDesk.Controllers
                 .FirstOrDefaultAsync();
 
             //Logged In User
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetUserId();
             TicketResolution resolution = new();
             resolution.TicketId = id;
             resolution.StatusId = closedstatus.Id;
@@ -575,7 +576,7 @@ namespace HelpDesk.Controllers
         {
 
             //Logged In User
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetUserId();
             TicketResolution resolution = new();
             resolution.TicketId = id;
             resolution.StatusId = vm.StatusId;
@@ -634,7 +635,7 @@ namespace HelpDesk.Controllers
          
                 try
                 {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = User.GetUserId();
 
                 _context.Update(ticket);
                     await _context.SaveChangesAsync(userId);
@@ -681,7 +682,7 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetUserId();
 
             var ticket = await _context.Tickets.FindAsync(id);
             if (ticket != null)

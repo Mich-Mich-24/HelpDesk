@@ -9,6 +9,7 @@ using HelpDesk.Data;
 using HelpDesk.Models;
 using HelpDesk.Data.Migrations;
 using System.Security.Claims;
+using HelpDesk.Services;
 
 namespace HelpDesk.Controllers
 {
@@ -70,7 +71,7 @@ namespace HelpDesk.Controllers
         public async Task<IActionResult> Create(UserRoleProfile userRoleProfile)
         {
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetUserId();
             userRoleProfile.CreatedOn = DateTime.Now;
             userRoleProfile.CreatedById = userId;
 
@@ -117,7 +118,7 @@ namespace HelpDesk.Controllers
 
                 try
                 {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = User.GetUserId();
                 userRoleProfile.ModifiedOn = DateTime.Now;
                 userRoleProfile.ModifiedById = userId;
 
@@ -170,7 +171,7 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetUserId();
 
             var userRoleProfile = await _context.UserRoleProfiles.FindAsync(id);
             if (userRoleProfile != null)

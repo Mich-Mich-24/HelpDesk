@@ -11,6 +11,7 @@ using HelpDesk.AuditsManager;
 using System.Security.Claims;
 using HelpDesk.ViewModels;
 using AutoMapper;
+using HelpDesk.Services;
 
 namespace HelpDesk.Controllers
 {
@@ -69,7 +70,7 @@ namespace HelpDesk.Controllers
         {
 
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetUserId();
 
             SystemCode systemCodedetails = new();
             var systemCode = _mapper.Map(vm, systemCodedetails); 
@@ -115,8 +116,8 @@ namespace HelpDesk.Controllers
          
                 try
                 {
-                    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    systemCode.ModifiedOn = DateTime.Now;
+                var userId = User.GetUserId();
+                systemCode.ModifiedOn = DateTime.Now;
                     systemCode.ModifiedById = userId;
 
                     _context.Update(systemCode);
@@ -163,7 +164,7 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.GetUserId();
             var systemCode = await _context.SystemCodes.FindAsync(id);
             if (systemCode != null)
             {
