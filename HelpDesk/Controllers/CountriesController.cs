@@ -80,7 +80,9 @@ namespace HelpDesk.Controllers
 
             _context.Add(country);
                 await _context.SaveChangesAsync(userId);
-                return RedirectToAction(nameof(Index));
+
+            TempData["MESSAGE"] = "Country Added successfully";
+            return RedirectToAction(nameof(Index));
          
         
             return View(country);
@@ -125,7 +127,8 @@ namespace HelpDesk.Controllers
 
                 _context.Update(country);
                     await _context.SaveChangesAsync(userId);
-                }
+                TempData["MESSAGE"] = "Country successfully Updated";
+            }
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!CountryExists(country.Id))
@@ -176,6 +179,7 @@ namespace HelpDesk.Controllers
             }
 
             await _context.SaveChangesAsync(userId);
+            TempData["MESSAGE"] = "Country Deleted successfully";
             return RedirectToAction(nameof(Index));
         }
 

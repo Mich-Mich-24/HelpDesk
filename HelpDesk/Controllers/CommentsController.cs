@@ -173,13 +173,17 @@ namespace HelpDesk.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             var comment = await _context.Comments.FindAsync(id);
             if (comment != null)
             {
                 _context.Comments.Remove(comment);
             }
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(userId);
+
+            TempData["MESSAGE"] = "Comment Deleted successfully";
             return RedirectToAction(nameof(Index));
         }
 
