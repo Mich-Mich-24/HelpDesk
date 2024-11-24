@@ -11,6 +11,7 @@ using System.Security.Claims;
 using HelpDesk.ViewModels;
 using HelpDesk.AuditsManager;
 using HelpDesk.Data.Migrations;
+using AutoMapper;
 
 namespace HelpDesk.Controllers
 {
@@ -18,11 +19,13 @@ namespace HelpDesk.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public TicketsController(ApplicationDbContext context, IConfiguration configuration)
+        public TicketsController(ApplicationDbContext context, IConfiguration configuration, IMapper imapper)
         {
             _context = context;
             _configuration = configuration;
+            _mapper = imapper;
         }
 
         // GET: Tickets
@@ -404,17 +407,12 @@ namespace HelpDesk.Controllers
                 .Include(x => x.SystemCode)
                 .Where(x => x.SystemCode.Code == "Status" && x.Code == "Pending")
                 .FirstOrDefaultAsync();
-                
-            Ticket ticket = new(); 
-            ticket.Id = ticketvm.Id;
-            ticket.Title = ticketvm.Title;
-            ticket.Description = ticketvm.Description;
+
+            Ticket ticketdetails = new();
+            var ticket = _mapper.Map(ticketvm, ticketdetails);
+
+      
             ticket.StatusId = pendingstatus.Id;
-            ticket.PriorityId = ticketvm.PriorityId;
-            ticket.SubCategoryId = ticketvm.SubCategoryId;
-            ticket.Attachment = ticketvm.Attachment;
-
-
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             ticket.CreatedOn = DateTime.Now;
             ticket.CreatedById = userId;

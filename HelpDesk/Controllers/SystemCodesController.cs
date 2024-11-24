@@ -9,16 +9,20 @@ using HelpDesk.Data;
 using HelpDesk.Models;
 using HelpDesk.AuditsManager;
 using System.Security.Claims;
+using HelpDesk.ViewModels;
+using AutoMapper;
 
 namespace HelpDesk.Controllers
 {
     public class SystemCodesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public SystemCodesController(ApplicationDbContext context)
+        public SystemCodesController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: SystemCodes
@@ -61,10 +65,14 @@ namespace HelpDesk.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( SystemCode systemCode)
+        public async Task<IActionResult> Create(SystemCodeViewModel vm)
         {
-           
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            SystemCode systemCodedetails = new();
+            var systemCode = _mapper.Map(vm, systemCodedetails); 
                 systemCode.CreatedOn = DateTime.Now;
                 systemCode.CreatedById = userId;
 

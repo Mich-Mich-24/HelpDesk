@@ -1,5 +1,7 @@
+using AutoMapper;
 using HelpDesk.Data;
 using HelpDesk.Models;
+using HelpDesk.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +17,22 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
       .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+var config = new MapperConfiguration(
+    cfg =>
+    {
+        if (cfg != null)
+        {
+            cfg.SourceMemberNamingConvention = new PascalCaseNamingConvention();
+            cfg.DestinationMemberNamingConvention = new PascalCaseNamingConvention();
+            cfg.AllowNullDestinationValues = true;
+            cfg.AddProfile(new AutomapperProfileService());
+
+        }
+    });
+
+var mapper = config.CreateMapper();
+builder.Services.AddSingleton(mapper);
 
 var app = builder.Build();
 
