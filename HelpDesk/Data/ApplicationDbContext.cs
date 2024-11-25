@@ -37,6 +37,7 @@ namespace HelpDesk.Data
        public DbSet<Country> Countries { get; set; }
 
        public DbSet<City> Cities { get; set; }
+       public DbSet<CitiesView> CitiesView { get; set; }
 
        public virtual async Task<int> SaveChangesAsync(string userid = null)
         {
@@ -111,6 +112,13 @@ namespace HelpDesk.Data
 
 
             base.OnModelCreating(builder);
+            foreach (var relationship in builder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
+            builder.Entity<CitiesView>().HasNoKey().ToTable(nameof(CitiesView), k=>k.ExcludeFromMigrations());
 
             builder.Entity<Comment>()
                 .HasOne(c => c.CreatedBy)

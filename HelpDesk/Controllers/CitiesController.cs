@@ -25,8 +25,9 @@ namespace HelpDesk.Controllers
         // GET: Cities
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Cities.Include(c => c.Country).Include(c => c.CreatedBy).Include(c => c.ModifiedBy);
-            return View(await applicationDbContext.ToListAsync());
+            var cities =  await _context.CitiesView.ToArrayAsync();
+             
+            return View(cities);
         }
 
         // GET: Cities/Details/5
