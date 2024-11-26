@@ -25,7 +25,7 @@
                             @Html.DisplayNameFor(model => model.Role)
                         </th>
                         <td>
-                            @Html.DisplayNameFor(model => model.CreatedBy.Id)
+                            @Html.DisplayNameFor(model => model.CreatedBy)
                         </td>
                         <!-- Created On -->
                         <td>
@@ -47,7 +47,7 @@
                                 @Html.DisplayFor(modelItem => item.Role.Name)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.CreatedBy.FirstName)
+                                @Html.DisplayFor(modelItem => item.CreatedBy.FullName)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.CreatedOn)

@@ -1,0 +1,60 @@
+﻿@model HelpDesk.ViewModels.ProfileViewModel
+
+@{
+    ViewData["Title"] = "User Rights";
+    var id = ViewContext.RouteData.Values["id"];
+}
+
+<div class="card rounded-4">
+    <div class="card-body">
+        <form asp-action="UserRights">
+            <div class="row">
+                <div class="col-md-12">
+                    <label asp-for="RoleId" class="control-label">Role</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId">
+                                <option value="">Select Role</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div id="tree">
+                        <ul id="treeData" class="hummingbird-treeview" style="display: block">
+                            <li>
+                                <i class="fas fa-angle-right "></i>
+                                <input class="grandparent" rel="0" value="0" name="AllRights[]" type="checkbox" />
+                                <i class="fas fa-folder-open"></i> All Modules
+                                <ul>
+                                    @foreach (var item in Model.SystemTasks)
+                                    {
+                                        <li id="li_@item.Id" class="folder">
+                                            <i class="fas fa-arrow-circle-right animate__animated animate__fadeIn"></i>
+
+                                            <!-- Ensure the checkbox is unchecked if not checked in RightsIdsAssigned -->
+                                            @if (Model.RightsIdsAssigned.Contains(item.Id))
+                                            {
+                                                <input class="parent" rel="@item.Id" value="@item.Id" name="Ids[]" type="checkbox" checked="checked" />
+                                            }
+                                            else
+                                            {
+                                                <input class="parent" rel="@item.Id" value="@item.Id" name="Ids[]" type="checkbox" />
+                                            }
+
+                                            <i class="fas fa-folder-open"><span>@item.Name</span></i>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="js/hummingbird-treeview.min.js"></script>
