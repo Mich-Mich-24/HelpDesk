@@ -12,6 +12,8 @@ namespace HelpDesk.ViewModels
 
         public ICollection<int> RightsIdsAssigned { get; set; }
 
+        public int[] Ids {  get; set; }
+
         [DisplayName("Role Name")]
         public string RoleId { get; set; }
 
