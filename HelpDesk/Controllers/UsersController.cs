@@ -61,6 +61,7 @@ namespace HelpDesk.Controllers
         {
             try
             {
+                var roledetails = await _context.Roles.Where(x=>x.Id == user.RoleId).FirstOrDefaultAsync();
                 var userId = User.GetUserId();
 
                 ApplicationUser registeduser = new();
@@ -81,6 +82,7 @@ namespace HelpDesk.Controllers
                 if (result.Succeeded)
                 {
 
+                    await _userManager.AddToRoleAsync(registeduser, roledetails.Name);
                     TempData["MESSAGE"] = "User Details successfully Created";
 
                     return RedirectToAction(nameof(Index));
@@ -96,6 +98,11 @@ namespace HelpDesk.Controllers
             {
                 return View();
             }
+
+            ViewData["GenderId"] = new SelectList(_context.SystemCodesDetails
+               .Include(x => x.SystemCode)
+               .Where(x => x.SystemCode.Code == "Gender"), "Id", "Description", user.GenderId);
+            ViewData["RoleId"] = new SelectList(_context.Roles.ToList(), "Id", "Name", user.RoleId);
         }
 
         // GET: UsesController/Edit/5

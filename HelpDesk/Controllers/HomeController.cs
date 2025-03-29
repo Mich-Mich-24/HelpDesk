@@ -29,6 +29,8 @@ namespace HelpDesk.Controllers
             }
             else
             {
+                var allpermissions = User.FindFirst("UserPermisssion").Value;
+
                 var tickets = await _context.Tickets
             .Include(t => t.CreatedBy)
             .Include(t => t.SubCategory)
