@@ -1,4 +1,19 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (User.Identity.IsAuthenticated)
+{
+    var allUserPermissions = User.FindFirst("UserPermission")?.Value ?? "";
+
+    //Tickets Permission
+    var canCreateTicket = allUserPermissions.Contains("|TICKET:CREATE");
+    var canViewTicket = allUserPermissions.Contains("|TICKET:VIEW");
+
+    //Dashboard Permission
+    var canViewDashboard = allUserPermissions.Contains("|DASHBOARD:VIEW");
+
+
 
 
 <!DOCTYPE html>
@@ -202,53 +217,56 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                              with font-awesome or any other icon font library -->
-                        <li class="nav-item menu-open">
-                            <a asp-controller="Home" asp-action="Index" class="nav-link active">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                 
-                                </p>
-                            </a>
+                       
+                            <li class="nav-item menu-open">
+                                <a asp-controller="Home" asp-action="Index" class="nav-link active">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        Dashboard
 
-                        </li>
+                                    </p>
+                                </a>
 
-                        <li class="nav-item">
-                            <a href="javascript:;" class="nav-link has-arrow">
-                                <i class="nav-icon fas fa-ticket-alt"></i>
-                                <p>
-                                    Tickets
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item" style="background-color: #001f3f;">
-                                    <a asp-action="Index" asp-controller="Tickets" class="nav-link">
-                                        <i class="fas fa-clock nav-icon"></i>
-                                        <p>Recent Tickets</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item" style="background-color: #001f3f;">
-                                    <a asp-action="AssignedTickets" asp-controller="Tickets" class="nav-link">
-                                        <i class="fas fa-user-check nav-icon"></i>
-                                        <p>Assigned Tickets</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item" style="background-color: #001f3f;">
-                                    <a asp-action="ResolvedTickets" asp-controller="Tickets" class="nav-link">
-                                        <i class="fas fa-check-circle nav-icon"></i>
-                                        <p>Resolved Tickets</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item" style="background-color: #001f3f;">
-                                    <a asp-action="ClosedTickets" asp-controller="Tickets" class="nav-link">
-                                        <i class="fas fa-lock nav-icon"></i>
-                                        <p>Closed Tickets</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                            </li>
 
+                            @if (canViewTicket)
+                            {
+                             <li class="nav-item">
+                                <a href="javascript:;" class="nav-link has-arrow">
+                                    <i class="nav-icon fas fa-ticket-alt"></i>
+                                    <p>
+                                        Tickets
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item" style="background-color: #001f3f;">
+                                        <a asp-action="Index" asp-controller="Tickets" class="nav-link">
+                                            <i class="fas fa-clock nav-icon"></i>
+                                            <p>Recent Tickets</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" style="background-color: #001f3f;">
+                                        <a asp-action="AssignedTickets" asp-controller="Tickets" class="nav-link">
+                                            <i class="fas fa-user-check nav-icon"></i>
+                                            <p>Assigned Tickets</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" style="background-color: #001f3f;">
+                                        <a asp-action="ResolvedTickets" asp-controller="Tickets" class="nav-link">
+                                            <i class="fas fa-check-circle nav-icon"></i>
+                                            <p>Resolved Tickets</p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" style="background-color: #001f3f;">
+                                        <a asp-action="ClosedTickets" asp-controller="Tickets" class="nav-link">
+                                            <i class="fas fa-lock nav-icon"></i>
+                                            <p>Closed Tickets</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                             </li>
+                            }
                         <li class="nav-item">
                             <a asp-controller="Comments" asp-action="Index" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
@@ -483,7 +501,7 @@
 </body>
 </html>
 
-
+}
 
 
 

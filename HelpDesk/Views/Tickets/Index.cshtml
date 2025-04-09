@@ -2,6 +2,11 @@
 
 @{
     ViewData["Title"] = "Index";
+    var allUserPermissions = User.FindFirst("UserPermission")?.Value ?? "";
+
+    //Tickets Permission
+    var canCreateTicket = allUserPermissions.Contains("|TICKET:CREATE");
+    var canViewTicket = allUserPermissions.Contains("|TICKET:VIEW");
 }
 
 <div class="card rounded-4 shadow-sm" >
@@ -63,11 +68,12 @@
         <div class="d-flex align-items-center mb-2">
             <h6 class="mb-0">Recent Tickets</h6>
         </div>
-
-        <p>
-            <a asp-action="Create" class="btn btn-primary">Add New Ticket</a>
-        </p>
-
+        @if (canViewTicket)
+        {
+            <p>
+                <a asp-action="Create" class="btn btn-primary">Add New Ticket</a>
+            </p>
+        }
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped">
             <thead>

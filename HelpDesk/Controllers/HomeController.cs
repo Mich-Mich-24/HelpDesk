@@ -29,7 +29,7 @@ namespace HelpDesk.Controllers
             }
             else
             {
-                var allpermissions = User.FindFirst("UserPermisssion").Value;
+                //var allUserPermissions = User.FindFirst("UserPermission")?.Value;
 
                 var tickets = await _context.Tickets
             .Include(t => t.CreatedBy)
