@@ -5,53 +5,60 @@
     var id = ViewContext.RouteData.Values["id"];
 }
 
-<div class="card rounded-4">
+<div class="card rounded-4 shadow-sm">
     <div class="card-body">
+        <div class="card-header mb-3">
+            <h5 class="mb-0">User Rights Management</h5>
+        </div>
         <form asp-action="UserRights" method="post">
             <div class="row">
                 <div class="col-md-12">
-                    <label asp-for="RoleId" class="control-label">Role</label>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId">
-                                <option value="">Select Role</option>
-                            </select>
-                            <a class="CurrentRootUrl" href="~/UserRoleProfiles/UserRights/"></a>
+                    <div class="form-group mb-3">
+                        <label asp-for="RoleId" class="form-label">Role</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select asp-for="RoleId" class="form-control onchange" asp-items="ViewBag.RoleId">
+                                    <option value="">Select Role</option>
+                                </select>
+                                <a class="CurrentRootUrl" href="~/UserRoleProfiles/UserRights/"></a>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-12 mt-3">
+                <div class="col-md-12 mt-4">
                     <div id="tree">
-                        <input type="checkbox" id="selectAll" class="grandparent" />
-                        <label for="selectAll"><strong> Select All</strong></label>
+                        <div class="mb-3">
+                            <input type="checkbox" id="selectAll" class="grandparent" />
+                            <label for="selectAll" class="form-label"><strong>Select All</strong></label>
+                        </div>
 
-                        <ul id="treeData" style="list-style-type: none; padding-left: 20px;">
+                        <ul id="treeData" class="list-unstyled">
                             @foreach (var parent in Model.SystemTasks)
                             {
                                 <li>
                                     <input type="checkbox" class="parent" id="task_@parent.Id" name="Ids[]" value="@parent.Id"
-                                    @(Model.RightsIdsAssigned.Contains(parent.Id) ? "checked" : "") />
+                                    @((Model.RightsIdsAssigned != null && Model.RightsIdsAssigned.Contains(parent.Id)) ? "checked" : "") />
                                     <label for="task_@parent.Id"><strong>@parent.Name</strong></label>
 
                                     @if (parent.ChildTasks != null && parent.ChildTasks.Any())
                                     {
-                                        <ul style="list-style-type: none; padding-left: 20px;">
+                                        <ul class="list-unstyled ml-4">
                                             @foreach (var child in parent.ChildTasks)
                                             {
                                                 <li>
                                                     <input type="checkbox" class="child" id="task_@child.Id" name="Ids[]" value="@child.Id"
-                                                    @(Model.RightsIdsAssigned.Contains(child.Id) ? "checked" : "") />
+                                                    @((Model.RightsIdsAssigned != null && Model.RightsIdsAssigned.Contains(child.Id)) ? "checked" : "") />
                                                     <label for="task_@child.Id">@child.Name</label>
 
                                                     @if (child.ChildTasks != null && child.ChildTasks.Any())
                                                     {
-                                                        <ul style="list-style-type: none; padding-left: 20px;">
+                                                        <ul class="list-unstyled ml-4">
                                                             @foreach (var subChild in child.ChildTasks)
                                                             {
                                                                 <li>
                                                                     <input type="checkbox" class="sub-child" id="task_@subChild.Id" name="Ids[]" value="@subChild.Id"
-                                                                    @(Model.RightsIdsAssigned.Contains(subChild.Id) ? "checked" : "") />
+                                                                    @((Model.RightsIdsAssigned != null && Model.RightsIdsAssigned.Contains(subChild.Id)) ? "checked" : "") />
                                                                     <label for="task_@subChild.Id">@subChild.Name</label>
                                                                 </li>
                                                             }
@@ -67,53 +74,57 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mt-3">
                 <div class="col-md-12">
-                <button type="submit" class="btn btn-success pull-right">Save Rights</button>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-save me-2"></i>Save Rights
+                        </button>
+                    </div>
                 </div>
             </div>
         </form>
     </div>
 </div>
 
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Trigger page refresh based on role selection
+            $('.onchange').on('change', function () {
+                var selectedRole = $(".onchange option:selected").val();  // Get selected value
+                var baseUrl = $(".CurrentRootUrl").attr("href");  // Get base URL
+                if (selectedRole) {
+                    // Redirect the page
+                    window.location = baseUrl + selectedRole;
+                }
+            });
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        const selectAll = $("#selectAll");
-        const parentCheckboxes = $(".parent");
-        const childCheckboxes = $(".child");
-        const subChildCheckboxes = $(".sub-child");
+            const selectAll = $("#selectAll");
+            const parentCheckboxes = $(".parent");
+            const childCheckboxes = $(".child");
+            const subChildCheckboxes = $(".sub-child");
 
-        // Handle "Select All" functionality
-        selectAll.on("change", function () {
-            parentCheckboxes.prop("checked", this.checked);
-            childCheckboxes.prop("checked", this.checked);
-            subChildCheckboxes.prop("checked", this.checked);
+            // Handle "Select All" functionality
+            selectAll.on("change", function () {
+                parentCheckboxes.prop("checked", this.checked);
+                childCheckboxes.prop("checked", this.checked);
+                subChildCheckboxes.prop("checked", this.checked);
+            });
+
+            // Handle parent-child relationships
+            parentCheckboxes.on("change", function () {
+                $(this).closest("li").find(".child, .sub-child").prop("checked", this.checked);
+            });
+
+            childCheckboxes.on("change", function () {
+                $(this).closest("li").find(".sub-child").prop("checked", this.checked);
+            });
+
+            // Ensure nested checkboxes affect each other
+            $('input.parent, input.grandparent, input.child').on("change", function () {
+                $(this).siblings().find("input[type='checkbox']").prop("checked", this.checked);
+            });
         });
-
-        // Handle parent-child relationships
-        parentCheckboxes.on("change", function () {
-            $(this).closest("li").find(".child, .sub-child").prop("checked", this.checked);
-        });
-
-        childCheckboxes.on("change", function () {
-            $(this).closest("li").find(".sub-child").prop("checked", this.checked);
-        });
-
-        // Navigate on dropdown change
-        $('select[asp-for="RoleId"]').on("change", function () {
-            let selectedRole = $(this).val();
-            let baseUrl = $(".CurrentRootUrl").attr("href");
-            if (selectedRole) {
-                window.location = baseUrl + selectedRole;
-            }
-        });
-
-        // Ensure nested checkboxes affect each other
-        $('input.parent, input.grandparent, input.child').on("change", function () {
-            $(this).siblings().find("input[type='checkbox']").prop("checked", this.checked);
-        });
-    });
-</script>
-
+    </script>
+}

@@ -41,7 +41,7 @@ namespace HelpDesk.ClaimsManagement
                     // Get permissions for the role
                     var permissions = await _context.UserRoleProfiles
                         .Where(urp => urp.RoleId == role.Id)
-                        .Select(urp => $"@{urp.Task.Parent.Name}:{urp.Task.Name}")
+                        .Select(urp => $"@{urp.Task.Parent.Code}:{urp.Task.Name}")
                         .ToListAsync();
 
                     var allUserPermissions = "";

@@ -1,15 +1,16 @@
 ﻿@model HelpDesk.ViewModels.TicketViewModel
 
-@{
+@* @{
     ViewData["Title"] = "Index";
     var allUserPermissions = User.FindFirst("UserPermission")?.Value ?? "";
 
     //Tickets Permission
-    var canCreateTicket = allUserPermissions.Contains("|TICKET:CREATE");
-    var canViewTicket = allUserPermissions.Contains("|TICKET:VIEW");
-}
+    var canCreateTicket = allUserPermissions.Contains("|@TICKET:CREATE");
+    var canViewTicket = allUserPermissions.Contains("|@TICKET:VIEW");
 
-<div class="card rounded-4 shadow-sm" >
+} *@
+
+<div class="card rounded-4 shadow-sm">
     <div class="card-body">
         <form asp-action="Index" method="post" enctype="multipart/form-data">
             <div class="row g-3">
@@ -68,12 +69,12 @@
         <div class="d-flex align-items-center mb-2">
             <h6 class="mb-0">Recent Tickets</h6>
         </div>
-        @if (canViewTicket)
+       @*  @if (canViewTicket)  *@
         {
             <p>
                 <a asp-action="Create" class="btn btn-primary">Add New Ticket</a>
             </p>
-        }
+        @* } *@
         <div class="card-body">
             <table id="example1" class="table table-bordered table-striped">
             <thead>
@@ -93,12 +94,12 @@
             <tbody>
                 @foreach (var item in Model.Tickets)
                 {
-                    var colorcode = "Red";
-                    if (item.Status.Code == "Resolved") colorcode = "Green";
-                    else if (item.Status.Code == "Escalated") colorcode = "Yellow";
-                    else if (item.Status.Code == "InProgress") colorcode = "Purple";
-                    else if (item.Status.Code == "Closed") colorcode = "Green";
-                    else if (item.Status.Code == "AwaitingAssignment") colorcode = "Red";
+                    var statusClass = "status-default";
+                    if (item.Status.Code == "Resolved") statusClass = "status-resolved";
+                    else if (item.Status.Code == "Escalated") statusClass = "status-escalated";
+                    else if (item.Status.Code == "InProgress") statusClass = "status-inprogress";
+                    else if (item.Status.Code == "Closed") statusClass = "status-closed";
+                    else if (item.Status.Code == "AwaitingAssignment") statusClass = "status-awaitingassignment";
 
                     <tr>
                         <td>@Html.DisplayFor(modelItem => item.Id)</td>
@@ -107,7 +108,7 @@
                         <td>@Html.DisplayFor(modelItem => item.SubCategory.Name)</td>
                         <td>@Html.DisplayFor(modelItem => item.CreatedBy.FullName)</td>
                         <td>@Html.DisplayFor(modelItem => item.CreatedOn)</td>
-                        <td style="background-color:@colorcode">@Html.DisplayFor(modelItem => item.Status.Description)</td>
+                        <td class="@statusClass">@Html.DisplayFor(modelItem => item.Status.Description)</td>
                         <td class="text-center">
                             <a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id">
                                 @item.TicketComments.Count()
@@ -115,13 +116,13 @@
                         </td>
                             @if(Convert.ToInt32(@Model.MainDuration.Value) > item.TicketDuration)
                             {
-                                <td>
+                                <td class="duration-normal">
                                     @Html.DisplayFor(modelItem => item.TicketDuration) - Days
                                 </td>
                             }
                             else
                             {
-                                <td style="background-color:red">@Html.DisplayFor(modelItem => item.TicketDuration) - Days </td>
+                                <td class="duration-warning">@Html.DisplayFor(modelItem => item.TicketDuration) - Days</td>
                             }
                             <td>
                                 <div class="dropdown">
@@ -129,32 +130,32 @@
                                         Action <span class="caret"><i class="fa fa-caret-down"></i></span>
                                     </button>
                                     <div class="dropdown-menu">
-                                        <a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id" class="dropdown-item" style="background-color: #4a90e2; color: white;">
+                                        <a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id" class="dropdown-item dropdown-item-comments">
                                             <i class="fa fa-comments"></i> Comments
                                         </a>
                                         <div class="dropdown-divider"></div>
-                                        <a asp-action="Details" asp-route-id="@item.Id" class="dropdown-item" style="background-color: #357ABD; color: white;">
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="dropdown-item dropdown-item-details">
                                             <i class="fa fa-info-circle"></i> Details
                                         </a>
                                         <div class="dropdown-divider"></div>
-                                        <a asp-action="Edit" asp-route-id="@item.Id" class="dropdown-item" style="background-color: #2A5D9E; color: white;">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="dropdown-item dropdown-item-edit">
                                             <i class="fa fa-edit"></i> Edit
                                         </a>
                                         <div class="dropdown-divider"></div>
                                         @if (item.Status.Code != "Resolved" && item.Status.Code != "Closed")
                                         {
-                                            <a asp-action="TicketAssignment" asp-route-id="@item.Id" class="dropdown-item" style="background-color: #28a745; color: white;">
+                                            <a asp-action="TicketAssignment" asp-route-id="@item.Id" class="dropdown-item dropdown-item-assign">
                                                 <i class="fa fa-user-plus"></i> Assign
                                             </a>
                                             <div class="dropdown-divider"></div>
-                                            <a asp-action="Resolve" asp-route-id="@item.Id" class="dropdown-item" style="background-color: #17a2b8; color: white;">
+                                            <a asp-action="Resolve" asp-route-id="@item.Id" class="dropdown-item dropdown-item-resolve">
                                                 <i class="fa fa-check-circle"></i> Resolve
                                             </a>
                                         }
                                         else
                                         {
-                                            <a asp-action="ReOpen" asp-route-id="@item.Id" class="dropdown-item" style="background-color: #28a745; color: white;">
-                                                <i class="fa fa-user-plus"></i> Re-Open
+                                            <a asp-action="ReOpen" asp-route-id="@item.Id" class="dropdown-item dropdown-item-reopen">
+                                                <i class="fa fa-redo"></i> Re-Open
                                             </a>
                                         }
                                     </div>

@@ -79,6 +79,8 @@ namespace HelpDesk.Controllers
 
             return View(vm);
         }
+
+
         [HttpPost]
         public async Task<IActionResult> UserRights(ProfileViewModel vm)
         {
@@ -87,7 +89,7 @@ namespace HelpDesk.Controllers
             {
                 var allprofiles = _context.UserRoleProfiles.Where(x => x.RoleId == vm.RoleId).ToList();
                 _context.UserRoleProfiles.RemoveRange(allprofiles);
-                foreach(var taskId in vm.Ids)
+                foreach (var taskId in vm.Ids)
                 {
                     var rightprofile = new UserRoleProfile
                     {

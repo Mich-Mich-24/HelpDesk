@@ -13,11 +13,11 @@ namespace HelpDesk.ViewModels
         public ICollection<int> RightsIdsAssigned { get; set; }
 
         public int[] Ids {  get; set; }
-
+          
         [DisplayName("Role Name")]
         public string RoleId { get; set; }
 
         [DisplayName("System Task")]
-        public string TaskId { get; set; }
+        public int TaskId { get; set; }
     }
 }
